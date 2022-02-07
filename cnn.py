@@ -18,7 +18,7 @@ trainFile = "sign_mnist_train.csv"
 testFile = "sign_mnist_test.csv"
 
 df = pd.read_csv(trainFile)
-
+#  remove this comment
 train = df.values[0:, 1:]
 labels = df.values[0:, 0]
 labels = to_categorical(labels)
