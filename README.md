@@ -1,5 +1,3 @@
-NOTE: CSV data files for training and testing data must be added to project folder manually due to file sizes. 
-
 # Audible ON
 
 ***
