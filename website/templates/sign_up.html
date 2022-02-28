@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block style %}
+    body{
+        background-color: #3c3f41;
+    }
+    a:link, a:visited {
+        color: #f2c738;
+    }
+    h1, p {
+        color: white;
+    }
+    .form-control {
+        margin-bottom: 3px;
+    }
+    .checkbox {
+        margin-bottom: 3px;
+        color: white;
+    }
+    .btn-primary {
+        background-color: #f2c738;
+        border-color: #f2c738;
+    }
+    .btn-primary:hover {
+        background-color: #d4ae31;
+        border-color: #d4ae31;
+    }
+
+{% endblock %}
+
+
+{% block title%}Sign Up{% endblock %}
+{% block body %}
+<div class="text-center mt-5">
+    <img src="static/audibleON_logo.png" width="180">
+    <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
+    <form method="POST" style="max-width:400px;margin:auto;">
+        <input type="email" id="email" class="form-control" placeholder="Email address" name="email"/>
+
+        <div class="input-group">
+           <div class="input-group-prepend">
+             <div class="input-group-text">@</div>
+           </div>
+           <input type="text" class="form-control" id="username" placeholder="Username" name="username">
+        </div>
+
+        <input type="password" id="password" placeholder="Password" class="form-control" name="password1">
+
+        <input type="password" id="pass" placeholder="Confirm password" class="form-control" name="password2">
+
+       <!-- <div class="form-group">
+            <select class="custom-select" required>
+              <option value="">Degree of hearing impairment</option>
+              <option value="1">None</option>
+              <option value="2">Mild</option>
+              <option value="3">Moderate</option>
+              <option value="4">Severe</option>
+              <option value="5">Total</option>
+              <option value="6">Prefer not to say</option>
+            </select>
+            <div class="invalid-feedback">Example invalid custom select feedback</div>
+        </div>-->
+
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me"> Remember me
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block">Sign Up</button>
+        <p>Already have an account? Login <a href="/login">here!</a></p>
+    </form>
+
+
+</div>
+{% endblock %}
