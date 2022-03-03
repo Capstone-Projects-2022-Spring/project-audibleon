@@ -33,7 +33,7 @@ class User(db.Model):
     user_phone_number = db.Column(
         db.String(15),
         index = False,
-        unique = True,
+        unique = False,
         nullable = True
     )
 

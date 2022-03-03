@@ -1,5 +1,6 @@
-from flask import Blueprint, Response, render_template, request
+from flask import Blueprint, Response, render_template, request, make_response
 import cv2
+from .models import User
 
 views = Blueprint('views', __name__)
 camera = cv2.VideoCapture(0)
@@ -74,3 +75,4 @@ def about():
 @views.route('/help')
 def help():
     return render_template("help.html")
+

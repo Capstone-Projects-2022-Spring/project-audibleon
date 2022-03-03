@@ -16,7 +16,7 @@ def create_app():
     # Initialize the Application for the use with this Database Setup
     db.init_app(app)
 
-    with app.app_content():
+    with app.app_context():
 
         # Import Views and Auth (Routes)
         from .views import views
