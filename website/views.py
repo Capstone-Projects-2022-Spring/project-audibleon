@@ -76,3 +76,8 @@ def about():
 def help():
     return render_template("help.html")
 
+@views.route('/list')
+def list():
+
+    return render_template('profile_list.html', users=User.query.all(), title='Profiles List')
+
