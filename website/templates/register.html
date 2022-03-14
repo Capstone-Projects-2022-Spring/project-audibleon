@@ -48,6 +48,12 @@
             {{ form.email.label(class='sr-only') }}
             {{ form.email(class='form-control') }}
 
+            {% for error in form.email.errors %}
+            <span style="color: red;">
+                [{{ error }}] - Email
+            </span>
+            {% endfor %}
+
             <!-- Username -->
             {{ form.username.label(class='sr-only') }}
             <div class="input-group">
@@ -57,26 +63,60 @@
                 {{ form.username(class='form-control') }}
             </div>
 
+            {% for error in form.username.errors %}
+            <span style="color: red;">
+                [{{ error }}] - Username
+            </span>
+            {% endfor %}
+
             <!-- Password -->
             {{ form.password.label(class='sr-only') }}
             {{ form.password(class='form-control') }}
+
+            {% for error in form.password.errors %}
+            <span style="color: red;">
+                [{{ error }}] - Password
+            </span>
+            {% endfor %}
 
             <!-- Confirm Password -->
             {{ form.confirm_password.label(class='sr-only') }}
             {{ form.confirm_password(class='form-control') }}
 
+            {% for error in form.confirm_password.errors %}
+            <span style="color: red;">
+                [{{ error }}] - Confirm Password
+            </span>
+            {% endfor %}
+
             <!-- Phone Number -->
             {{ form.phone_number.label(class='sr-only') }}
             {{ form.phone_number(class='form-control') }}
 
+            {% for error in form.phone_number.errors %}
+            <span style="color: red;">
+                [{{ error }}] - Phone Number
+            </span>
+            {% endfor %}
+
             <!-- Impairment -->
             {{ form.impairment.label(class='sr-only') }}
+            {{ form.impairment(class='form-select') }}
+
+            <!--
             <select class="form-select">
                 <option selected>Select Hearing Impairment Severity</option>
                 {% for key, val in form.impairment.choices %}
                     <option value={{ key }}>{{ val }}</option>
                 {% endfor %}
             </select>
+            -->
+
+            {% for error in form.impairment.errors %}
+            <span style="color: red;">
+                [{{ error }}] - Impairment
+            </span>
+            {% endfor %}
 
             <!-- Submit/Register Button -->
             {{ form.submit(class="btn btn-lg btn-primary btn-block") }}
