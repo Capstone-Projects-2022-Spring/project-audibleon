@@ -84,10 +84,24 @@ def sign_in():
 
     form = LoginForm()
 
+    # Check to see if the Form has been Submitted
     if form.validate_on_submit():
 
-        flash('Login Requested for User {}, remember_me={}'.format(form.email.data, form.remember_me.data))
-        return redirect('/index')
+        # Obtain the Data Passed in the Form to Create the User Logging In
+        user = User.query.filter(User.user_email == form.email.data).first()
+
+        # If an Account Exists with that Email Address
+        if user:
+
+            # Check to see if the Password Provided is that Accounts Password
+            if user.user_password == form.password.data:
+
+                flash('Login Requested for User {}, remember_me={}'.format(form.email.data, form.remember_me.data))
+
+                return redirect(url_for('views.profile'))
+
+        flash('Login Requested - Invalid Email and/or Password Provided!')
+        return redirect('/sign-in')
 
     return render_template('signin.html', form=form)
 
@@ -96,7 +110,33 @@ def reg():
 
     form = SignupForm()
 
+    # Check to see if the Form has been Submitted
     if form.validate_on_submit():
+
+        # Validating that NO User already exists with entered Username and/or Email Address since those Fields are Unique
+        #.filter() Returns ALL Records which Match the Given Criteria; .first() Means we are Expecting a Maximum of ONE Record
+        existing_user = User.query.filter(User.user_email == form.email.data or User.username == form.username.data).first()
+
+        if existing_user:
+
+            return make_response(f'{form.email.data} and/or {form.username.data} already used on an existing account!')
+
+        # If Username and Email are both Unique then Create an Instance of the User Class
+        new_user = User(
+            user_email = form.email.data,
+            username = form.username.data,
+            user_password = form.password.data,
+            user_phone_number = form.phone_number.data,
+            user_key_phrases = '',
+            user_impairment = form.impairment.data,
+            audibleon_role_id = 2
+        )
+
+        # Add the Nuew User to the Database
+        db.session.add(new_user)
+
+        # Commit the Changes to the Database
+        db.session.commit()
 
         return redirect('/sign-in')
 
