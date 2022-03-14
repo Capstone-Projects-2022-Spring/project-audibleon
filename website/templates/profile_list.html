@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="user-list">
+
+        {% for user in users %}
+
+        <ul id="user.username">
+
+            <li>
+                <span class="field-name">User Email:</span>
+                <span class="field-value">{{ user.user_email }}</span>
+            </li>
+            <li>
+                <span class="field-name">Username:</span>
+                <span class="field-value">{{ user.username }}</span>
+            </li>
+            <li>
+                <span class="field-name">Phone Number:</span>
+                <span class="field-value">{{ user.user_phone_number }}</span>
+            </li>
+            <li>
+                <span class="field-name">Impairment:</span>
+                <span class="field-value">{{ user.user_impairment }}</span>
+            </li>
+            <li>
+                <span class="field-name">User Role:</span>
+                <span class="field-value">{{ user.audibleon_role_id }}</span>
+            </li>
+
+        </ul>
+
+        {% endfor %}
+
+    </div>
+
+{% endblock %}
