@@ -1,5 +1,6 @@
-from flask import Blueprint, Response, render_template, request
+from flask import Blueprint, Response, render_template, request, make_response
 import cv2
+from .models import User
 
 views = Blueprint('views', __name__)
 camera = cv2.VideoCapture(0)
@@ -74,3 +75,9 @@ def about():
 @views.route('/help')
 def help():
     return render_template("help.html")
+
+@views.route('/list')
+def list():
+
+    return render_template('profile_list.html', users=User.query.all(), title='Profiles List')
+
