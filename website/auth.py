@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, flash, make_response, redirect, url_for
 from website import db
 from .models import User
+from .forms import LoginForm, SignupForm
 
 auth = Blueprint('auth', __name__)
 
@@ -78,4 +79,25 @@ def register():
     # Return a List of the Existing User Profiles
     return render_template('profile_list.html', users=User.query.all(), title='Profiles List')
 
+@auth.route('/sign-in', methods=['GET', 'POST'])
+def sign_in():
 
+    form = LoginForm()
+
+    if form.validate_on_submit():
+
+        flash('Login Requested for User {}, remember_me={}'.format(form.email.data, form.remember_me.data))
+        return redirect('/index')
+
+    return render_template('signin.html', form=form)
+
+@auth.route('/reg', methods=['GET', 'POST'])
+def reg():
+
+    form = SignupForm()
+
+    if form.validate_on_submit():
+
+        return redirect('/sign-in')
+
+    return render_template('register.html', form=form)

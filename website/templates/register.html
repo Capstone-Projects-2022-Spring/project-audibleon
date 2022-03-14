@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block style %}
+    body{
+        background-color: #3c3f41;
+    }
+    a:link, a:visited {
+        color: #f2c738;
+    }
+    h1, p {
+        color: white;
+    }
+    .form-control {
+        margin-bottom: 3px;
+    }
+    .checkbox {
+        margin-bottom: 3px;
+        color: white;
+    }
+    .btn-primary {
+        background-color: #f2c738;
+        border-color: #f2c738;
+    }
+    .btn-primary:hover {
+        background-color: #d4ae31;
+        border-color: #d4ae31;
+    }
+
+{% endblock %}
+
+
+{% block title%}Sign Up{% endblock %}
+
+{% block body %}
+<div class="text-center mt-5">
+
+    <img src="static/audibleON_logo.png" width="180">
+    <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
+
+    <form method="POST" style="max-width:400px;margin:auto;">
+
+        <!-- The form.hidden_tag() template argument generates a hidden field that includes a token that is used to protect the form
+        against Cross-Site Request Forgery, also known as CSRF, attacks. -->
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+
+            <!-- Email -->
+            {{ form.email.label(class='sr-only') }}
+            {{ form.email(class='form-control') }}
+
+            <!-- Username -->
+            {{ form.username.label(class='sr-only') }}
+            <div class="input-group">
+                <div class="'input-group-prepend">
+                    <div class='input-group-text'>@</div>
+                </div>
+                {{ form.username(class='form-control') }}
+            </div>
+
+            <!-- Password -->
+            {{ form.password.label(class='sr-only') }}
+            {{ form.password(class='form-control') }}
+
+            <!-- Confirm Password -->
+            {{ form.confirm_password.label(class='sr-only') }}
+            {{ form.confirm_password(class='form-control') }}
+
+            <!-- Phone Number -->
+            {{ form.phone_number.label(class='sr-only') }}
+            {{ form.phone_number(class='form-control') }}
+
+            <!-- Impairment -->
+            {{ form.impairment.label(class='sr-only') }}
+            <select class="form-select">
+                <option selected>Select Hearing Impairment Severity</option>
+                {% for key, val in form.impairment.choices %}
+                    <option value={{ key }}>{{ val }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Submit/Register Button -->
+            {{ form.submit(class="btn btn-lg btn-primary btn-block") }}
+
+        </div>
+
+        <!-- Redirect to Login -->   
+        <p>
+            Already have an account? Login <a href="/login">Here!</a>
+        </p>
+
+    </form>
+
+</div>
+{% endblock %}
