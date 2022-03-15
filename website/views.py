@@ -1,5 +1,6 @@
 from flask import Blueprint, Response, render_template, request, make_response
 import cv2
+from flask_login import login_required
 from .models import User
 
 views = Blueprint('views', __name__)
@@ -56,6 +57,7 @@ def onlineConnect():
 def home():
     return render_template("index.html")
 
+"""
 @views.route('/profile', methods=['POST','GET'])
 def profile():
     if request.method == 'POST':
@@ -63,8 +65,18 @@ def profile():
         print(data)
 
     return render_template("profile.html")
+"""
+
+@views.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+
+
+
+    return render_template("profile.html")
 
 @views.route('/phrases')
+@login_required
 def phrases():
     return render_template("phrases.html")
 
@@ -77,6 +89,7 @@ def help():
     return render_template("help.html")
 
 @views.route('/list')
+@login_required
 def list():
 
     return render_template('profile_list.html', users=User.query.all(), title='Profiles List')

@@ -1,6 +1,8 @@
 from . import db
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
-class User(db.Model):
+class User(UserMixin, db.Model):
 
     __tablename__ = 'audibleon_user'
 
@@ -17,14 +19,14 @@ class User(db.Model):
     )
 
     username = db.Column(
-        db.String(45),
+        db.String(20),
         index = False,
         unique = True,
         nullable = False
     )
 
     user_password = db.Column(
-        db.String(45),
+        db.String(200),
         index = False,
         unique = False,
         nullable = False
@@ -38,7 +40,7 @@ class User(db.Model):
     )
 
     user_key_phrases = db.Column(
-        db.String(400),
+        db.String(300),
         index = False,
         unique = False,
         nullable = True
@@ -57,6 +59,24 @@ class User(db.Model):
         unique = False,
         nullable = False
     )
+
+    # Override the Default Properties of get_id() in UserMixin
+    def get_id(self):
+
+        return (self.audibleon_user_id)
+
+    def set_password(self, password):
+
+        # Create Hashed Password
+        self.user_password = generate_password_hash(
+            password,
+            method = 'sha256'
+        )
+
+    def check_password(self, password):
+
+        # Check Hashed Password
+        return check_password_hash(self.user_password, password)
 
     def __repr__(self):
 

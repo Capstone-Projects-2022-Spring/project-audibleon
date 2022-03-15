@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request, flash, make_response, redirect, url_for
-from website import db
+from flask import Blueprint, render_template, request, flash, make_response, redirect, url_for, abort
+from flask_login import login_user, current_user, logout_user
+from website import db, login_manager
 from .models import User
 from .forms import LoginForm, SignupForm
 
@@ -13,7 +14,11 @@ def login():
 
 @auth.route('/logout')
 def logout():
-    return "<p>Logout</p>"
+    
+    # Logout the Current User
+    logout_user()
+
+    return redirect(url_for('views.home'))
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
@@ -82,23 +87,29 @@ def register():
 @auth.route('/sign-in', methods=['GET', 'POST'])
 def sign_in():
 
+    # Check to Ensure User isn't Already Logged In
+    if current_user.is_authenticated:
+
+        return redirect(url_for('views.profile'))
+    
     form = LoginForm()
 
     # Check to see if the Form has been Submitted
     if form.validate_on_submit():
 
         # Obtain the Data Passed in the Form to Create the User Logging In
-        user = User.query.filter(User.user_email == form.email.data).first()
+        user = User.query.filter_by(user_email = form.email.data).first()
 
-        # If an Account Exists with that Email Address
-        if user:
+        # If an Account Exists with that Email Address AND Password is Valid
+        if user and user.check_password(password=form.password.data):
 
-            # Check to see if the Password Provided is that Accounts Password
-            if user.user_password == form.password.data:
+            # Login and Validate the 'user'
+            # 'user' should be an Instance of the 'User' Class
+            login_user(user)
 
-                flash('Login Requested for User {}, remember_me={}'.format(form.email.data, form.remember_me.data))
+            flash('Login Requested for User {}, Success!'.format(form.email.data))
 
-                return redirect(url_for('views.profile'))
+            return redirect(url_for('views.profile'))
 
         flash('Login Requested - Invalid Email and/or Password Provided!')
         return redirect('/sign-in')
@@ -125,12 +136,15 @@ def reg():
         new_user = User(
             user_email = form.email.data,
             username = form.username.data,
-            user_password = form.password.data,
+            #user_password = form.password.data,
             user_phone_number = form.phone_number.data,
             user_key_phrases = '',
             user_impairment = form.impairment.data,
             audibleon_role_id = 2
         )
+
+        # Set the Hashed Password for the User
+        new_user.set_password(form.password.data)
 
         # Add the Nuew User to the Database
         db.session.add(new_user)
@@ -141,3 +155,20 @@ def reg():
         return redirect('/sign-in')
 
     return render_template('register.html', form=form)
+
+@login_manager.user_loader
+def load_user(user_id):
+
+    # Check if User is Logged-In on Every Page Load
+    if user_id is not None:
+        
+        return User.query.get(user_id)
+    
+    return None
+
+@login_manager.unauthorized_handler
+def unauthorized():
+
+    # Redirect Unauthorized Users to Login Page
+    flash('You Must be Logged-In to View that Page.')
+    return redirect(url_for('auth.sign_in'))

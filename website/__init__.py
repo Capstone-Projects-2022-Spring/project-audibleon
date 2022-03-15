@@ -1,8 +1,13 @@
 from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 
+# Initialize the Database Variable
 db = SQLAlchemy()
+
+# Initialize the Login Manager Variable
+login_manager = LoginManager()
 
 def create_app():
     
@@ -15,6 +20,9 @@ def create_app():
 
     # Initialize the Application for the use with this Database Setup
     db.init_app(app)
+
+    # Initialize the Application for the use with the Login Manager
+    login_manager.init_app(app)
 
     with app.app_context():
 
