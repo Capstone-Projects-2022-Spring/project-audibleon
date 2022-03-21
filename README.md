@@ -66,6 +66,12 @@ As technology and medicine advance each year, communication between hearing impa
 
 <a name = "run-release"></a>
 ### How to Run New Release
+#### Release v0.1.0-alpha:
+##### Step 1: Install and run jupyter notebook in a terminal.
+##### Step 2: type 'jupyter notebook' in a terminal to run the Jupyter Notebook application.
+##### Step 3: Find and select the Tutorial.ipynb file.
+##### Step 4: Follow links at the top of Tutorial.ipynb file to ensure proper installation of dependencies (note: this is an important step).
+##### Step 5: Run, in sequence, lines 1, 7, 1 (within update config for transfer learning code section), 8, 55, 2 (within load train model from checkpoint code section), 9, and then all of subsequent remaining lines of code.
 
 
 ***
@@ -76,7 +82,7 @@ As technology and medicine advance each year, communication between hearing impa
 ### Meet Our Team
 #### [Shakirah D. Cooper](https://github.com/ArchaePi)
 #### [Rachel Lazzaro](https://github.com/rlazz)
-#### [Ben Westburg](https://github.com/tun60968)
+#### [Ben Westburg](https://github.com/westbenj2020)
 #### [Mahmood Ahmed](https://github.com/RaymondLaubert)
 #### [Juan-Carlo Villamor Mercado](https://github.com/JC-127)
 #### [Raymond Laubert](https://github.com/MoodAhmed)
