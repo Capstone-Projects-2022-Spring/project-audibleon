@@ -99,25 +99,6 @@
             </span>
             {% endfor %}
 
-            <!-- Impairment -->
-            {{ form.impairment.label(class='sr-only') }}
-            {{ form.impairment(class='form-select') }}
-
-            <!--
-            <select class="form-select">
-                <option selected>Select Hearing Impairment Severity</option>
-                {% for key, val in form.impairment.choices %}
-                    <option value={{ key }}>{{ val }}</option>
-                {% endfor %}
-            </select>
-            -->
-
-            {% for error in form.impairment.errors %}
-            <span style="color: red;">
-                [{{ error }}] - Impairment
-            </span>
-            {% endfor %}
-
             <!-- Submit/Register Button -->
             {{ form.submit(class="btn btn-lg btn-primary btn-block") }}
 
@@ -125,7 +106,7 @@
 
         <!-- Redirect to Login -->   
         <p>
-            Already have an account? Login <a href="/login">Here!</a>
+            Already have an account? Login <a href="/sign-in">Here!</a>
         </p>
 
     </form>

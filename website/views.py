@@ -1,4 +1,5 @@
 from flask import Blueprint, Response, render_template, request, make_response
+from flask_login import login_required, current_user
 import cv2
 from .models import User
 
@@ -53,6 +54,7 @@ def onlineConnect():
     return render_template("index.html")
 
 @views.route('/')
+@login_required
 def home():
     return render_template("index.html")
 

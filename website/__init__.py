@@ -1,6 +1,7 @@
 from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 
 db = SQLAlchemy()
 
@@ -8,7 +9,6 @@ def create_app():
     
     # Create the Object of Flask
     app = Flask(__name__)
-    #app.config['SECRET_KEY'] = 'as;dlfkja;sdlkjf'
 
     # Load the Configuration from the config.py file
     app.config.from_object(Config)
@@ -28,5 +28,17 @@ def create_app():
 
         # Create SQL Tables for our Data Models
         db.create_all()
+
+        # add flask-login implementation
+        from .models import User
+
+        login_manager = LoginManager()
+        login_manager.login_view = 'auth.sign_in'
+        login_manager.init_app(app)
+
+        @login_manager.user_loader
+        def load_user(id):
+            print(User.query.get(int(id)))
+            return User.query.get(int(id))
 
         return app
