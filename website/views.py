@@ -3,17 +3,20 @@ import cv2
 from .models import User
 
 views = Blueprint('views', __name__)
-camera = cv2.VideoCapture(0)
-stateON = False
+global camera
 
-def gen_frames():  # generate frame by frame from camera
-    while stateON:
-        # Capture frame-by-frame
+camera = cv2.VideoCapture(0)
+global switch
+
+switch=1
+
+def gen_frames():
+    while True:
         success, frame = camera.read()  # read the camera frame
         if not success:
             break
         else:
-            ret, buffer = cv2.imencode('.jpg', frame)
+            ret, buffer = cv2.imencode('.jpg', cv2.flip(frame,1))
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
@@ -26,16 +29,20 @@ def video_feed():
 
 @views.route('/translate/fromASL', methods=['POST', 'GET'])
 def fromASL():
-    global stateON, camera
+    global switch, camera
     if request.method == 'POST':
-        if (stateON == False):
-            camera = cv2.VideoCapture(0)
-            cv2.destroyAllWindows()
-            stateON = True
-        else:
-            camera.release()
-            stateON = False
-    return render_template("index.html")
+        if request.form.get('stop') == 'Stop Translation':
+            print('pressed!')
+            if switch == 1:
+                switch = 0
+                camera.release()
+                cv2.destroyAllWindows()
+            else:
+                camera = cv2.VideoCapture(0)
+                switch=1
+    elif request.method=='GET':
+        return render_template("from_asl.html")
+    return render_template("from_asl.html")
 
 @views.route('/translate/toASL', methods=['POST', 'GET'])
 def toASL():
