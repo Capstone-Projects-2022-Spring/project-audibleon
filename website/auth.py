@@ -2,43 +2,48 @@ from flask import Blueprint, render_template, request, flash, make_response, red
 from website import db
 from .models import User
 from .forms import LoginForm, SignupForm
+from flask_login import login_user, login_required, logout_user, current_user
 
 auth = Blueprint('auth', __name__)
 
-@auth.route('/login', methods=['GET', 'POST'])
-def login():
-    data = request.form
-    print(data)
-    return render_template("login.html", text="testing", user = "tim", boolean = True)
+# @auth.route('/login', methods=['GET', 'POST'])
+# def login():
+#     data = request.form
+#     print(data)
+#     return render_template("login.html", text="testing", user = "tim", boolean = True)
 
 @auth.route('/logout')
+@login_required
 def logout():
-    return "<p>Logout</p>"
+    logout_user()
+    flash('You have been logged out of your account!', category='success')
 
-@auth.route('/sign-up', methods=['GET', 'POST'])
-def sign_up():
-    if request.method == 'POST':
-        data = request.form
-        print(data)
+    return redirect(url_for('auth.sign_in'))
 
-        email = request.form.get('email')
-        username = request.form.get('username')
-        password1 = request.form.get('password1')
-        password2 = request.form.get('password2')
-
-        ## basically create error checking here to make sure that the user information is valid
-        if len(email) < 4:
-           flash('Email address must be at least 4 characters', category='error')
-        elif len(username) < 2:
-            flash('Username must be at least 2 characters', category='error')
-        elif len(password1) < 7:
-            flash('Password must be at least 7 characters', category='error')
-        elif password1 != password2:
-            flash('Passwords do not match', category='error')
-        else:
-            flash('Account created! :)', category='success')
-            ## add the user information to the database
-    return render_template("sign_up.html")
+# @auth.route('/sign-up', methods=['GET', 'POST'])
+# def sign_up():
+#     if request.method == 'POST':
+#         data = request.form
+#         print(data)
+#
+#         email = request.form.get('email')
+#         username = request.form.get('username')
+#         password1 = request.form.get('password1')
+#         password2 = request.form.get('password2')
+#
+#         ## basically create error checking here to make sure that the user information is valid
+#         if len(email) < 4:
+#            flash('Email address must be at least 4 characters', category='error')
+#         elif len(username) < 2:
+#             flash('Username must be at least 2 characters', category='error')
+#         elif len(password1) < 7:
+#             flash('Password must be at least 7 characters', category='error')
+#         elif password1 != password2:
+#             flash('Passwords do not match', category='error')
+#         else:
+#             flash('Account created! :)', category='success')
+#             ## add the user information to the database
+#     return render_template("sign_up.html")
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -86,22 +91,20 @@ def sign_in():
 
     # Check to see if the Form has been Submitted
     if form.validate_on_submit():
-
         # Obtain the Data Passed in the Form to Create the User Logging In
         user = User.query.filter(User.user_email == form.email.data).first()
 
         # If an Account Exists with that Email Address
         if user:
-
             # Check to see if the Password Provided is that Accounts Password
             if user.user_password == form.password.data:
-
-                flash('Login Requested for User {}, remember_me={}'.format(form.email.data, form.remember_me.data))
+                login_user(user, remember=True)
+                flash('Login successful!', category='success')
 
                 return redirect(url_for('views.profile'))
-
-        flash('Login Requested - Invalid Email and/or Password Provided!')
-        return redirect('/sign-in')
+        else:
+            flash('Error: user information not found', category='error')
+            return redirect('/sign-in')
 
     return render_template('signin.html', form=form)
 
@@ -128,7 +131,9 @@ def reg():
             user_password = form.password.data,
             user_phone_number = form.phone_number.data,
             user_key_phrases = '',
-            user_impairment = form.impairment.data,
+
+            user_impairment=1,
+            # user_impairment = form.impairment.data,
             audibleon_role_id = 2
         )
 
@@ -138,6 +143,6 @@ def reg():
         # Commit the Changes to the Database
         db.session.commit()
 
-        return redirect('/sign-in')
+        return redirect('/')
 
     return render_template('register.html', form=form)

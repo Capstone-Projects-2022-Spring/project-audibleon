@@ -16,6 +16,6 @@ class SignupForm(FlaskForm):
     password = PasswordField(label='Password', validators=[InputRequired(), Length(min=6, max=20)], render_kw={'placeholder': 'Password'})
     confirm_password = PasswordField(label='Confirm Password', validators=[InputRequired(), EqualTo('password')], render_kw={'placeholder': 'Confirm Password'})
     phone_number = StringField(label='Phone Number', validators=[Optional()], render_kw={'placeholder': 'Phone Number (Optional)'})
-    impairment = SelectField(label='Impairment', validators=[DataRequired()], choices=[(1, 'None'), (2, 'Deaf'), (3, 'Mute')])
+    # impairment = SelectField(label='Impairment', validators=[DataRequired()], choices=[(1, 'None'), (2, 'Deaf'), (3, 'Mute')])
     submit = SubmitField(label='Sign-Up')
 

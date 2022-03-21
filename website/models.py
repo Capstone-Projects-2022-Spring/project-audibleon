@@ -1,6 +1,7 @@
 from . import db
+from flask_login import UserMixin
 
-class User(db.Model):
+class User(db.Model, UserMixin):
 
     __tablename__ = 'audibleon_user'
 
@@ -61,3 +62,7 @@ class User(db.Model):
     def __repr__(self):
 
         return 'User {}'.format(self.username)
+
+    # override UserMixin get_id()
+    def get_id(self):
+        return self.audibleon_user_id
