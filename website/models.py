@@ -66,3 +66,12 @@ class User(db.Model, UserMixin):
     # override UserMixin get_id()
     def get_id(self):
         return self.audibleon_user_id
+
+    def get_username(self):
+        return self.username
+
+    def get_email(self):
+        return self.user_email
+
+    def get_userAbility(self):
+        return self.user_impairment
