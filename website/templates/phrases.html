@@ -1,14 +1,76 @@
 {% extends 'base.html' %}
-{% block title %}Saved Phrases{% endblock %}
+{% block style %}
+    .list-group {
+        margin-bottom: 10px;
+    }
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      width: 25%;
+    }
+    h2.phrases {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .btn-primary, .list-group-item-action.active{
+        background-color: #3863f2;
+        border-color: #3863f2;
+    }
+    .btn-primary:hover {
+        background-color: #3157d4;
+        border-color: #3157d4;
+    }
+
+{% endblock %}
+{% block title%}Saved Phrases{% endblock %}
+
 {% block content %}
-<div class="text-center mt-5">
-    <p>Okay this is the page for the user's saved phrases. User should be able to:</p>
-    <li>view all previously saved phrases</li>
-    <li>add a new phrase with a tag view text</li>
-    <li>search through existing tags to find phrases</li>
-    <li>delete phrases at will</li>
-    <li>it would also be cool if they had a list of their most used phrases</li>
-    <li>after selecting a phrase and clicking on it, a large card with the text should appear on the screen, so that they can easily share it with others</li>
-    <li>card should be dismissable and return the user back to their search results</li>
+<div class="container">
+  <div class="row">
+      <div class="col-4">
+          <img src="static/audibleON_logo.png" class="center">
+          <h2 class="phrases">My Phrases</h2>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-4">
+        <div class="list-group" id="list-tab" role="tablist">
+          <a class="list-group-item list-group-item-action active" id="list-add-list" data-bs-toggle="list" href="#list-add" role="tab" aria-controls="list-home">Add Phrases</a>
+          <a class="list-group-item list-group-item-action" id="list-view-list" data-bs-toggle="list" href="#list-view" role="tab" aria-controls="list-view">View Phrases</a>
+        </div>
+      </div>
+      <div class="col">
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="list-add" role="tabpanel" aria-labelledby="list-add-list">
+                <form class="was-validated" method = "POST">
+                    <textarea class="form-control" name="bio" id="validationTextarea" placeholder="Add new phrase here" required></textarea>
+                    <div class="invalid-feedback">
+                      Please enter text above.
+                    </div>
+                    <div class="valid-feedback">
+                      Looking good!
+                    </div>
+                    <div class="mb-3">
+                      <input type="text" class="form-control" id="tags" placeholder="#tag (separated by spaces)" required>
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-primary" type="submit">Submit phrase</button>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="list-view" role="tabpanel" aria-labelledby="list-view-list">
+                <div class="input-group rounded">
+                  <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                  <span class="input-group-text border-0" id="search-addon">
+                    <i class="fas fa-search"></i>
+                  </span>
+                </div>
+            </div>
+        </div>
+      </div>
+  </div>
 </div>
 {% endblock %}

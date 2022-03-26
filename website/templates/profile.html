@@ -42,7 +42,7 @@
         <div class="list-group" id="list-tab" role="tablist">
           <a class="list-group-item list-group-item-action active" id="list-account-list" data-bs-toggle="list" href="#list-account" role="tab" aria-controls="list-home">Account Info</a>
           <a class="list-group-item list-group-item-action" id="list-bio-list" data-bs-toggle="list" href="#list-bio" role="tab" aria-controls="list-bio">User Bio</a>
-          <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Settings</a>
+          <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Account Settings</a>
         </div>
       </div>
       <div class="col">
@@ -76,6 +76,47 @@
                                     </div>
                                     <div class="mb-3">
                                         <button class="btn btn-primary" type="submit">Update bio</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion" id="userState">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="userState-headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#userState-collapseOne" aria-expanded="false" aria-controls="userBio-collapseOne">
+                              Update Status
+                            </button>
+                        </h2>
+                        <div id="userState-collapseOne" class="accordion-collapse collapse" aria-labelledby="userState-headingOne">
+                            <div class="accordion-body">
+                                <form>
+                                    <div class="form-group">
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                          <label class="form-check-label" for="inlineRadio1">Deaf</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                          <label class="form-check-label" for="inlineRadio2">Hard of Hearing</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                          <label class="form-check-label" for="inlineRadio3">Hearing</label>
+                                        </div>
+                                    </div>
+                                </form>
+                                <form>
+                                    <div class="form-group">
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+                                          <label class="form-check-label" for="inlineRadio4">Mute</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
+                                          <label class="form-check-label" for="inlineRadio5">Speaking</label>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
