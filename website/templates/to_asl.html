@@ -9,17 +9,48 @@
 
 {% block content%}
 
+
 <div class="row">
     <div class="col align-items-start"></div>
     <div class="col align-items-center">
-        <video width="700" controls="controls" autoplay="autoplay" >
-            <source src="\static\testing.mp4" type="video/mp4">
+        {% if videos %}
+        <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" autoplay controls width="640px" height="360px">
+<!--			<source src="{{ url_for('views.display_video', filename=videos) }}" type="video/mp4">-->
         </video>
+        {% endif %}
+
+<!--            <source src="http://media.w3.org/2010/05/sintel/trailer.mp4">-->
+<!--        <video-->
+<!--            id="my-video"-->
+<!--            class="video-js"-->
+<!--            controls-->
+<!--            preload="auto"-->
+<!--            width="640"-->
+<!--            height="264"-->
+<!--            poster="MY_VIDEO_POSTER.jpg"-->
+<!--            data-setup="{}"-->
+<!--          >-->
+<!--            <source src="/static/testing.mp4" type="video/mp4" />-->
+
+<!--&lt;!&ndash;            <source src="MY_VIDEO.mp4" type="video/mp4" />&ndash;&gt;-->
+<!--&lt;!&ndash;            <source src="MY_VIDEO.webm" type="video/webm" />&ndash;&gt;-->
+<!--            <p class="vjs-no-js">-->
+<!--              To view this video please enable JavaScript, and consider upgrading to a-->
+<!--              web browser that-->
+<!--              <a href="https://videojs.com/html5-video-support/" target="_blank"-->
+<!--                >supports HTML5 video</a-->
+<!--              >-->
+<!--            </p>-->
+<!--          </video>-->
+
+
+<!--        <video width="700" controls="controls" autoplay="autoplay" >-->
+<!--            <source src="/static/testing.mp4" type="video/mp4">-->
+<!--        </video>-->
     </div>
 
     <div class="col align-items-end"></div >
 </div>
-
 
 <div class="container">
   <div class="row">
@@ -77,5 +108,48 @@
         $("#exampleModal").modal('show');
 
     });
+
+    {% if videos %}
+
+    var videos = '{{ videos }}';
+    let resources = [];
+
+    videos = JSON.parse(videos.replace(/&#34;/g,'"'));
+    console.log(videos)
+
+    videos.forEach(video => {
+        let vidName = '{{ url_for('views.display_video', filename=video) }}'+ '/' + video;
+        console.log(vidName);
+        let resource = {
+            sources: [{
+                src: vidName,
+                type: 'video/mp4'
+            }],
+        }
+        resources.push(resource)
+    });
+
+    var player = videojs('videoPlayer');
+    player.playlist(resources);
+    player.playlist.autoadvance(0);
+
+    {% endif %}
+/**
+<!--    player.playlist([{-->
+<!--      sources: [{-->
+<!--        src: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',-->
+<!--        type: 'video/mp4'-->
+<!--      }],-->
+<!--     }, {-->
+<!--      sources: [{-->
+<!--        src: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',-->
+<!--        type: 'video/mp4'-->
+<!--      }],-->
+
+<!--    }]);-->
+
+<!--    // Play through the playlist automatically.-->
+<!--    player.playlist.autoadvance(0);-->
+**/
 </script>
 {% endblock %}

@@ -1,3 +1,2 @@
-C:\Users\rlazz\Documents\GitHub\project-audibleon\videos\hello.mp4
-C:\Users\rlazz\Documents\GitHub\project-audibleon\videos\love.mp4
-C:\Users\rlazz\Documents\GitHub\project-audibleon\videos\mom.mp4
+accident.mp4
+airplane.mp4

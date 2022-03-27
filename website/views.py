@@ -1,5 +1,7 @@
-from flask import Blueprint, Response, render_template, request, make_response
+from flask import Blueprint, Response, render_template, request, make_response, url_for
 import cv2
+from werkzeug.utils import redirect
+
 from .models import User
 from text_to_asl import getVideoPath
 
@@ -50,12 +52,17 @@ def toASL():
     if request.method == 'POST':
         data = request.form.get('text')
 
-        data = getVideoPath(data)
+        json = getVideoPath(data)
 
-        print("path: ", data)
-        render_template("to_asl.html", path=data)
+        print("json ", json)
+        return render_template("to_asl.html", videos=json)
+    else:
+        return render_template("to_asl.html")
 
-    return render_template("to_asl.html", path='')
+@views.route('/display/<filename>')
+def display_video(filename):
+    print('display_video filename:'+filename)
+    return redirect(url_for('static', filename='videos/'+filename), code=301)
 
 @views.route('/translate/audio', methods=['POST', 'GET'])
 def audioToText():
