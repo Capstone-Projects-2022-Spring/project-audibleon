@@ -1,6 +1,7 @@
 from flask import Blueprint, Response, render_template, request, make_response
 import cv2
 from .models import User
+from text_to_asl import getVideoPath
 
 views = Blueprint('views', __name__)
 global camera
@@ -46,8 +47,15 @@ def fromASL():
 
 @views.route('/translate/toASL', methods=['POST', 'GET'])
 def toASL():
-    print("reached text to asl page")
-    return render_template("index.html")
+    if request.method == 'POST':
+        data = request.form.get('text')
+
+        data = getVideoPath(data)
+
+        print("path: ", data)
+        render_template("to_asl.html", path=data)
+
+    return render_template("to_asl.html", path='')
 
 @views.route('/translate/audio', methods=['POST', 'GET'])
 def audioToText():
