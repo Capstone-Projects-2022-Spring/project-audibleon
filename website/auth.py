@@ -36,7 +36,7 @@ def login():
         flash('Login Requested - Invalid Email and/or Password Provided!')
         return redirect('/login')
 
-    return render_template('signin.html', form=form)
+    return render_template('login.html', form=form)
 
 @auth.route('/logout')
 def logout():
@@ -84,7 +84,7 @@ def sign_up():
 
         return redirect('/login')
 
-    return render_template('register.html', form=form)
+    return render_template('sign_up.html', form=form)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -101,4 +101,4 @@ def unauthorized():
 
     # Redirect Unauthorized Users to Login Page
     flash('You Must be Logged-In to View that Page.')
-    return redirect(url_for('auth.sign_in'))
+    return redirect(url_for('auth.login'))
