@@ -31,7 +31,7 @@ def login():
 
             flash('Login Requested for User {}, Success!'.format(form.email.data))
 
-            return redirect(url_for('views.profile'))
+            return redirect(url_for('views.home'))
 
         flash('Login Requested - Invalid Email and/or Password Provided!')
         return redirect('/login')

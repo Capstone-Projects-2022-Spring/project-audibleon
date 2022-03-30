@@ -41,6 +41,8 @@
                     <li class="nav-item">
                         <a class="nav-item nav-link" id="home" href="/">Translate</a>
                     </li>
+
+                    {% if current_user.is_authenticated %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="/" id="AccountDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Account
@@ -48,9 +50,15 @@
                         <ul class="dropdown-menu" aria-labelledby="AccountDropDown">
                             <li><a class="nav-item nav-link" id="profile" href="/profile">Profile</a></li>
                             <li><a class="nav-item nav-link" id="phrases" href="/phrases">Saved Phrases</a></li>
-                            <li><a class="nav-item nav-link" id="logout" href="/login">Logout</a></li>
+                            <li><a class="nav-item nav-link" id="logout" href="/logout">Logout</a></li>
                         </ul>
                     </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-item nav-link" id="login" href="/login">Login</a>
+                    </li>
+                    {% endif %}
+                    
                     <li class="nav-item">
                         <a class="nav-item nav-link" id="about" href="/about">About</a>
                     </li>
