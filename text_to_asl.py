@@ -1,7 +1,5 @@
 import json
 import os
-
-from moviepy.editor import *
 from nltk.tokenize import word_tokenize
 import string
 
