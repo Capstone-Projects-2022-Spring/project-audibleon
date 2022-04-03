@@ -1,34 +1,22 @@
 from flask import Blueprint, Response, render_template, request, make_response, url_for
 import cv2
 from werkzeug.utils import redirect
-
 from .models import User
 from text_to_asl import getVideoPath
+from detection import activateModel, getCamera
 
 views = Blueprint('views', __name__)
+
+
 global camera
-
-camera = cv2.VideoCapture(0)
+camera = getCamera()
 global switch
-
 switch=1
-
-def gen_frames():
-    while True:
-        success, frame = camera.read()  # read the camera frame
-        if not success:
-            break
-        else:
-            ret, buffer = cv2.imencode('.jpg', cv2.flip(frame,1))
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
-
 
 @views.route('/video_feed')
 def video_feed():
     #Video streaming route. Put this in the src attribute of an img tag
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(activateModel(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @views.route('/translate/fromASL', methods=['POST', 'GET'])
 def fromASL():
