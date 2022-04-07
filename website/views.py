@@ -1,39 +1,33 @@
-from flask import Blueprint, Response, render_template, request, make_response, url_for
-import cv2
+from flask import Blueprint, Response, render_template, request, url_for, jsonify
 from werkzeug.utils import redirect
 from .models import User
 from text_to_asl import getVideoPath
-from detection import activateModel, getCamera
+from detection import activateModel, myWords
 
 views = Blueprint('views', __name__)
 
+global m
+m = myWords()
 
-global camera
-camera = getCamera()
-global switch
-switch=1
+@views.route('/get_words')
+def get_words():
+    wordList = m.wordList
+    # this should return a jsonified format of the words in the class myWords.words list
+    return jsonify({'results':wordList})
 
 @views.route('/video_feed')
 def video_feed():
     #Video streaming route. Put this in the src attribute of an img tag
-    return Response(activateModel(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(activateModel(m), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @views.route('/translate/fromASL', methods=['POST', 'GET'])
 def fromASL():
-    global switch, camera
     if request.method == 'POST':
-        if request.form.get('stop') == 'Stop Translation':
-            print('pressed!')
-            if switch == 1:
-                switch = 0
-                camera.release()
-                cv2.destroyAllWindows()
-            else:
-                camera = cv2.VideoCapture(0)
-                switch=1
-    elif request.method=='GET':
-        return render_template("from_asl.html")
-    return render_template("from_asl.html")
+        m.resetList()
+        return render_template("from_asl.html", translating=True)
+    elif request.method == 'GET':
+        return render_template("from_asl.html", translating=False)
+
 
 @views.route('/translate/toASL', methods=['POST', 'GET'])
 def toASL():
@@ -90,4 +84,3 @@ def help():
 def list():
 
     return render_template('profile_list.html', users=User.query.all(), title='Profiles List')
-
