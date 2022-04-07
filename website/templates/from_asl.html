@@ -11,9 +11,11 @@
 <div class="row">
     <div class="col align-items-start"></div>
     <div class="col align-items-center">
-        {% if translating %}
+        {% if translating and wordsModel %}
 <!--        <h2>Press 'q' to end the translation</h2>-->
         <img src="{{ url_for('views.video_feed') }}">
+        {% elif translating %}
+        this is the view for the alphabet translator
         {% endif %}
 
     </div>
@@ -32,7 +34,8 @@
     <div class="col text-center">
         <form method="POST">
         {% if not translating %}
-        <input type="submit" class="btn btn-lg btn-success" name="translateButton" value="Start Translation">
+        <input type="submit" class="btn btn-lg btn-success" name="translateButton" value="Words">
+        <input type="submit" class="btn btn-lg btn-success" name="translateButton" value="Alphabet">
         {% elif translating %}
         <input type="submit" class="btn btn-lg btn-danger" name="translateButton" value="Restart Translation">
         {% endif %}

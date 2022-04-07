@@ -24,7 +24,12 @@ def video_feed():
 def fromASL():
     if request.method == 'POST':
         m.resetList()
-        return render_template("from_asl.html", translating=True)
+        if request.form['translateButton'] == 'Words':
+            return render_template("from_asl.html", translating=True, wordsModel=True)
+        elif request.form['translateButton'] == 'Alphabet':
+            return render_template("from_asl.html", translating=True, wordsModel=False)
+        else:
+            return render_template("from_asl.html", translating=False)
     elif request.method == 'GET':
         return render_template("from_asl.html", translating=False)
 
