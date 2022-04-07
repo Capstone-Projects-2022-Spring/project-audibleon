@@ -4,6 +4,28 @@
     .row {
       padding-top: 20px;
     }
+
+     #container {
+             margin: 0px auto;
+             border: 10px #333 solid;
+         }
+         #videoElement {
+             width: 640px;
+             height: 480px;
+             background-color: #666;
+         }
+
+         #imageElement {
+             width: 640px;
+             height: 480px;
+             background-color: #666;
+         }
+
+         #canvasElement {
+             width: 640px;
+             height: 480px;
+             display: none;
+         }
 {% endblock %}
 
 {% block content%}
@@ -13,7 +35,20 @@
     <div class="col align-items-center">
         {% if translating and wordsModel %}
 <!--        <h2>Press 'q' to end the translation</h2>-->
-        <img src="{{ url_for('views.video_feed') }}">
+
+            <video autoplay="true" id="videoElement">
+            </video>
+            <img id="imageElement" src="{{ url_for('main.video_feed2') }}">
+            <canvas id="canvasElement"></canvas>
+<!--        <div id="container">-->
+<!--            <div>-->
+<!--            <video autoplay="true" id="videoElement"></video>-->
+<!--                <canvas id="canvasElement"></canvas>-->
+
+<!--                <img id="photo">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <img src="{{ url_for('main.video_feed2') }}">-->
         {% elif translating %}
         this is the view for the alphabet translator
         {% endif %}
@@ -58,7 +93,7 @@
     var myTimer = setInterval(updateText, 3000);
 
     function updateText(){
-        var updatedText = $.get("{{ url_for('views.get_words') }}");
+        var updatedText = $.get("{{ url_for('main.get_words') }}");
 
         updatedText.done(function(results) {
             var result = "";
@@ -72,7 +107,7 @@
     }
 
     function getAudio(){
-        var updatedText = $.get("{{ url_for('views.get_words') }}");
+        var updatedText = $.get("{{ url_for('main.get_words') }}");
 
         updatedText.done(function(results) {
             var result = "";

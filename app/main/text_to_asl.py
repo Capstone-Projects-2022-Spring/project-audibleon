@@ -31,7 +31,7 @@ def List2Dic(List):
     return dict(map(lambda x: [ x.split(".")[0], x], List))
 
 def getVideosFromTokens(tokens):
-    filename = "video_list.txt"
+    filename = "../static/video_list.txt"
     with open(filename) as f:
         videoFiles = f.read().splitlines()
 
@@ -70,7 +70,7 @@ def getVideosFromTokens(tokens):
 #         data['src'] = value
 #         listClips.append(data)
 #
-#     # path = "C:\\Users\\rlazz\\Documents\\GitHub\\project-audibleon\\website\\static\\testing.mp4"
+#     # path = "C:\\Users\\rlazz\\Documents\\GitHub\\project-audibleon\\app\\static\\testing.mp4"
 #     #
 #     # if os.path.exists(path):
 #     #     print("deleting!")

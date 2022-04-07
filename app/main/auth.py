@@ -1,21 +1,22 @@
 from flask import Blueprint, render_template, request, flash, make_response, redirect, url_for
-from website import db
+from app import db
 from .models import User
 from .forms import LoginForm, SignupForm
+from . import main
 
-auth = Blueprint('auth', __name__)
+# auth = Blueprint('auth', __name__)
 
-@auth.route('/login', methods=['GET', 'POST'])
+@main.route('/login', methods=['GET', 'POST'])
 def login():
     data = request.form
     print(data)
     return render_template("login.html", text="testing", user = "tim", boolean = True)
 
-@auth.route('/logout')
+@main.route('/logout')
 def logout():
     return "<p>Logout</p>"
 
-@auth.route('/sign-up', methods=['GET', 'POST'])
+@main.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
         data = request.form
@@ -40,7 +41,7 @@ def sign_up():
             ## add the user information to the database
     return render_template("sign_up.html")
 
-@auth.route('/register', methods=['GET', 'POST'])
+@main.route('/register', methods=['GET', 'POST'])
 def register():
 
     username = request.args.get('user')
@@ -79,7 +80,7 @@ def register():
     # Return a List of the Existing User Profiles
     return render_template('profile_list.html', users=User.query.all(), title='Profiles List')
 
-@auth.route('/sign-in', methods=['GET', 'POST'])
+@main.route('/sign-in', methods=['GET', 'POST'])
 def sign_in():
 
     form = LoginForm()
@@ -105,7 +106,7 @@ def sign_in():
 
     return render_template('signin.html', form=form)
 
-@auth.route('/reg', methods=['GET', 'POST'])
+@main.route('/reg', methods=['GET', 'POST'])
 def reg():
 
     form = SignupForm()
