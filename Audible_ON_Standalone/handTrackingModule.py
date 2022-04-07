@@ -46,6 +46,17 @@ class handDetector():
                 if draw:
                     cv2.circle(img, (cx, cy), 55, (255, 0, 255), cv2.FILLED)
         return lmList
+    
+    def findHandType(self):
+        handsType = []
+      
+        if self.results.multi_hand_landmarks != None:
+            for hand in self.results.multi_handedness:
+                handType = hand.classification[0].label
+                handsType.append(handType)
+                
+        return handsType
+        
 
     def fingerCombination(self, lmList):
         
