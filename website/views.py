@@ -1,47 +1,57 @@
-from flask import Blueprint, Response, render_template, request, make_response
+from flask import Blueprint, Response, render_template, request, make_response, url_for
 import cv2
 from flask_login import login_required
+from werkzeug.utils import redirect
 from .models import User
+from text_to_asl import getVideoPath
+from detection import activateModel, getCamera
 
 views = Blueprint('views', __name__)
-camera = cv2.VideoCapture(0)
-stateON = False
 
-def gen_frames():  # generate frame by frame from camera
-    while stateON:
-        # Capture frame-by-frame
-        success, frame = camera.read()  # read the camera frame
-        if not success:
-            break
-        else:
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
+global camera
+camera = getCamera()
+global switch
+switch=1
 
 @views.route('/video_feed')
 def video_feed():
     #Video streaming route. Put this in the src attribute of an img tag
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(activateModel(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @views.route('/translate/fromASL', methods=['POST', 'GET'])
 def fromASL():
-    global stateON, camera
+    global switch, camera
     if request.method == 'POST':
-        if (stateON == False):
-            camera = cv2.VideoCapture(0)
-            cv2.destroyAllWindows()
-            stateON = True
-        else:
-            camera.release()
-            stateON = False
-    return render_template("index.html")
+        if request.form.get('stop') == 'Stop Translation':
+            print('pressed!')
+            if switch == 1:
+                switch = 0
+                camera.release()
+                cv2.destroyAllWindows()
+            else:
+                camera = cv2.VideoCapture(0)
+                switch=1
+    elif request.method=='GET':
+        return render_template("from_asl.html")
+    return render_template("from_asl.html")
 
 @views.route('/translate/toASL', methods=['POST', 'GET'])
 def toASL():
-    print("reached text to asl page")
-    return render_template("index.html")
+    if request.method == 'POST':
+        data = request.form.get('text')
+
+        json = getVideoPath(data)
+
+        print("json ", json)
+        return render_template("to_asl.html", videos=json)
+    else:
+        return render_template("to_asl.html")
+
+@views.route('/display/<filename>')
+def display_video(filename):
+    print('display_video filename:'+filename)
+    return redirect(url_for('static', filename='videos/'+filename), code=301)
 
 @views.route('/translate/audio', methods=['POST', 'GET'])
 def audioToText():
