@@ -54,6 +54,7 @@ def onlineConnect():
     return render_template("index.html")
 
 @views.route('/')
+@login_required
 def home():
     return render_template("index.html")
 
