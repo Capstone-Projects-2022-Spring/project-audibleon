@@ -3,17 +3,25 @@ from werkzeug.utils import redirect
 from .models import User
 from text_to_asl import getVideoPath
 from detection import activateModel, myWords
+import alphabet as a
+import handTrackingModule as htm
 
 views = Blueprint('views', __name__)
 
 global m
 m = myWords()
+handModel = htm.handDetector(detectionCon = 1)
 
 @views.route('/get_words')
 def get_words():
     wordList = m.wordList
     # this should return a jsonified format of the words in the class myWords.words list
     return jsonify({'results':wordList})
+
+@views.route('/letters_feed')
+def letters_feed():
+    #Video streaming route. Put this in the src attribute of an img tag
+    return Response(a.activateLetters(m, handModel), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @views.route('/video_feed')
 def video_feed():
