@@ -68,16 +68,6 @@ def onlineConnect():
 def home():
     return render_template("index.html")
 
-"""
-@views.route('/profile', methods=['POST','GET'])
-def profile():
-    if request.method == 'POST':
-        data = request.form
-        print(data)
-
-    return render_template("profile.html")
-"""
-
 @views.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
