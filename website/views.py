@@ -1,5 +1,5 @@
 from flask import Blueprint, Response, render_template, request, url_for, jsonify
-from flask_login import login_required
+from flask_login import login_required, current_user
 from werkzeug.utils import redirect
 from .models import User
 from text_to_asl import getVideoPath
@@ -12,9 +12,7 @@ camera = Camera()
 
 @views.route('/clear_list', methods=['POST'])
 def clear_list():
-    print(camera.wordList)
     camera.wordList.clear()
-    print(camera.wordList)
     return ("nothing")
 
 @views.route ('/update_model', methods=['POST'])
@@ -38,11 +36,13 @@ def video_feed():
     return Response(camera.baseRoutine(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @views.route('/translate/fromASL', methods=['POST', 'GET'])
+@login_required
 def fromASL():
     return render_template("from_asl.html")
 
 
 @views.route('/translate/toASL', methods=['POST', 'GET'])
+@login_required
 def toASL():
     if request.method == 'POST':
         data = request.form.get('text')
@@ -60,14 +60,19 @@ def display_video(filename):
     return redirect(url_for('static', filename='videos/'+filename), code=301)
 
 @views.route('/translate/audio', methods=['POST', 'GET'])
+@login_required
 def audioToText():
     print("reached audio to text page")
     return render_template("index.html")
 
 @views.route('/translate/connect', methods=['POST', 'GET'])
+@login_required
 def onlineConnect():
-    print("reached online connection page")
-    return render_template("index.html")
+    if request.method == 'POST':
+        print(request.form)
+        return render_template("connect.html", translating=True)
+
+    return render_template("connect.html")
 
 @views.route('/')
 @login_required
@@ -77,7 +82,6 @@ def home():
 @views.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-
     return render_template("profile.html")
 
 @views.route('/phrases')

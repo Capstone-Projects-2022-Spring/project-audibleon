@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}Connect Online{% endblock %}
+
+{% block content %}
+{% if (current_user.user_impairment == 1) %}
+
+<div class="row">
+    <div class="row">
+      <div class="col">
+        <img src="{{ url_for('views.video_feed') }}" style="border:1px solid black;" width="75%">
+      </div>
+      <div class="col">
+        <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" autoplay controls width="200%" height="200%"></video>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <input type="radio" class="btn-check" name="options-outlined" id="words-btn" value="words" autocomplete="off" checked>
+        <label class="btn btn-outline-primary" for="words-btn" type="submit">Words</label>
+        <input type="radio" class="btn-check" name="options-outlined" id="letters-btn" value="letters" autocomplete="off">
+        <label class="btn btn-outline-primary" for="letters-btn" type="submit">Letters</label>
+        <br>Translation:
+        <textarea class="form-control" id="words" rows="5"></textarea>
+        <button type="button" id="audio" class="btn btn-primary" onclick="getAudio()">Audio</button>
+        <button type="button" id="clear" class="btn btn-primary" onclick="clearList()">Clear</button>
+        <button type="button" id="send" class="btn btn-danger" onclick="sendMessage()">Send Message</button>
+      </div>
+      <div class="col" id="chat container">
+        Live Chat
+      </div>
+    </div>
+</div>
+
+{% endif %}
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Connect to User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form id="text-to-translate" action="#" method="post">
+          <div class="modal-body">
+              <div class="mb-3">
+                <label for="message-text" class="col-form-label">Enter Room Value:</label>
+<!--                <input type="text" class="form-control" name="text" id="message-text">-->
+                <input type="text" class="form-control" id="message-text">
+<!--                <textarea class="form-control" name="text" id="message-text"></textarea>-->
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Translate</button>
+          </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script>
+
+    // {% if not translating %}
+    $(document).ready(function(){
+        $("#exampleModal").modal('show');
+    });
+    // {% endif %}
+</script>
+{% endblock %}
