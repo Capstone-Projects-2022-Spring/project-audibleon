@@ -1,4 +1,5 @@
 from flask import Blueprint, Response, render_template, request, url_for, jsonify
+from flask_login import login_required
 from werkzeug.utils import redirect
 from .models import User
 from text_to_asl import getVideoPath
@@ -69,18 +70,18 @@ def onlineConnect():
     return render_template("index.html")
 
 @views.route('/')
+@login_required
 def home():
     return render_template("index.html")
 
-@views.route('/profile', methods=['POST','GET'])
+@views.route('/profile', methods=['GET', 'POST'])
+@login_required
 def profile():
-    if request.method == 'POST':
-        data = request.form
-        print(data)
 
     return render_template("profile.html")
 
 @views.route('/phrases')
+@login_required
 def phrases():
     return render_template("phrases.html")
 
@@ -93,5 +94,6 @@ def help():
     return render_template("help.html")
 
 @views.route('/list')
+@login_required
 def list():
     return render_template('profile_list.html', users=User.query.all(), title='Profiles List')
