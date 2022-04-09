@@ -9,39 +9,23 @@
 {% block content%}
 
 <div class="row">
-    <div class="col align-items-start"></div>
-    <div class="col align-items-center">
-        {% if translating and wordsModel %}
-<!--        <h2>Press 'q' to end the translation</h2>-->
-        <img src="{{ url_for('views.video_feed') }}">
-        {% elif translating %}
-        <img src="{{ url_for('views.letters_feed') }}">
-        {% endif %}
+    <div class="col align-items-start">
+        <input type="radio" class="btn-check" name="options-outlined" id="words-btn" value="words" autocomplete="off" checked>
+        <label class="btn btn-outline-primary" for="words-btn" type="submit">Words</label>
 
+        <input type="radio" class="btn-check" name="options-outlined" id="letters-btn" value="letters" autocomplete="off">
+        <label class="btn btn-outline-primary" for="letters-btn" type="submit">Letters</label>
+    </div>
+    <div class="col align-items-center">
+        <img src="{{ url_for('views.video_feed') }}" style="border:1px solid black;">
     </div>
 
     <div class="col align-items-end">
-        {% if translating %}
         <h3>Translation output</h3>
         <textarea class="form-control" id="words" rows="5" disabled readonly></textarea>
-        <button type="button" id="audio" class="btn btn-primary" onclick="getAudio()">Play Audio</button>
-        {% endif %}
+        <button type="button" id="audio" class="btn btn-primary" onclick="getAudio()">Audio</button>
+        <button type="button" id="clear" class="btn btn-primary" onclick="clearList()">Clear</button>
     </div>
-</div>
-
-<div class="container">
-  <div class="row">
-    <div class="col text-center">
-        <form method="POST">
-        {% if not translating %}
-        <input type="submit" class="btn btn-lg btn-success" name="translateButton" value="Words">
-        <input type="submit" class="btn btn-lg btn-success" name="translateButton" value="Alphabet">
-        {% elif translating %}
-        <input type="submit" class="btn btn-lg btn-danger" name="translateButton" value="Restart Translation">
-        {% endif %}
-        </form>
-    </div>
-  </div>
 </div>
 
 {% endblock %}
@@ -49,13 +33,32 @@
 
 {% block script %}
 <script>
-   $('#launchModal').on('click', function (e) {
+    function clearList() {
+        $.ajax({url: "{{ url_for('views.clear_list') }}", type: 'POST'})
+            .done(function() {
+              console.log("clear pressed");
+          });
+        updateText();
+    }
 
-        $("#stopTranslate").modal('show');
-
+    $('.btn-check').click(function(){
+    var formData = {
+      'value': $(this).attr('value')
+    };
+    console.log(formData);
+    $.ajax({
+          type: 'POST',
+          url: "{{ url_for('views.update_model') }}",
+          data: formData,
+          dataType: 'json',
+          encode: true
+      })
+      .done(function(data) {
+          console.log(data);
+      })
     });
 
-    var myTimer = setInterval(updateText, 3000);
+    var myTimer = setInterval(updateText, 2000);
 
     function updateText(){
         var updatedText = $.get("{{ url_for('views.get_words') }}");
@@ -98,6 +101,5 @@
         clearInterval(myTimer);
       }
     }, false);
-
 </script>
 {% endblock %}

@@ -2,44 +2,43 @@ from flask import Blueprint, Response, render_template, request, url_for, jsonif
 from werkzeug.utils import redirect
 from .models import User
 from text_to_asl import getVideoPath
-from detection import activateModel, myWords
-import alphabet as a
-import handTrackingModule as htm
+from camera import Camera
 
 views = Blueprint('views', __name__)
 
-global m
-m = myWords()
-handModel = htm.handDetector(detectionCon = 1)
+global camera
+camera = Camera()
 
-@views.route('/get_words')
+@views.route('/clear_list', methods=['POST'])
+def clear_list():
+    print(camera.wordList)
+    camera.wordList.clear()
+    print(camera.wordList)
+    return ("nothing")
+
+@views.route ('/update_model', methods=['POST'])
+def update_model():
+    model = request.form["value"]
+    if model == "words":
+        camera.updateModel(0)
+    else:
+        camera.updateModel(1)
+    return ("nothing")
+
+@views.route('/get_words', methods=['POST', 'GET'])
 def get_words():
-    wordList = m.wordList
+    wordList = camera.wordList
     # this should return a jsonified format of the words in the class myWords.words list
     return jsonify({'results':wordList})
-
-@views.route('/letters_feed')
-def letters_feed():
-    #Video streaming route. Put this in the src attribute of an img tag
-    return Response(a.activateLetters(m, handModel), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @views.route('/video_feed')
 def video_feed():
     #Video streaming route. Put this in the src attribute of an img tag
-    return Response(activateModel(m), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(camera.baseRoutine(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @views.route('/translate/fromASL', methods=['POST', 'GET'])
 def fromASL():
-    if request.method == 'POST':
-        m.resetList()
-        if request.form['translateButton'] == 'Words':
-            return render_template("from_asl.html", translating=True, wordsModel=True)
-        elif request.form['translateButton'] == 'Alphabet':
-            return render_template("from_asl.html", translating=True, wordsModel=False)
-        else:
-            return render_template("from_asl.html", translating=False)
-    elif request.method == 'GET':
-        return render_template("from_asl.html", translating=False)
+    return render_template("from_asl.html")
 
 
 @views.route('/translate/toASL', methods=['POST', 'GET'])
@@ -95,5 +94,4 @@ def help():
 
 @views.route('/list')
 def list():
-
     return render_template('profile_list.html', users=User.query.all(), title='Profiles List')
