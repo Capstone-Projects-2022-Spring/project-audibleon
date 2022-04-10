@@ -1,13 +1,12 @@
 from email import message
-from flask import Blueprint, Response, render_template, request, make_response, url_for, session
+from flask import Blueprint, Response, render_template, request, make_response, url_for, session, jsonify
 from flask_socketio import emit, join_room, leave_room
-import cv2
 from flask_login import login_required
 from werkzeug.utils import redirect
 from website import socketio
 from .models import User
 from text_to_asl import getVideoPath
-from detection import activateModel, getCamera
+from camera import Camera
 
 views = Blueprint('views', __name__)
 
@@ -17,31 +16,39 @@ _room_of_sid = {}
 _name_of_sid = {}
 
 global camera
-camera = getCamera()
-global switch
-switch=1
+camera = Camera()
+
+@views.route('/clear_list', methods=['POST'])
+def clear_list():
+    print(camera.wordList)
+    camera.wordList.clear()
+    print(camera.wordList)
+    return ("nothing")
+
+@views.route ('/update_model', methods=['POST'])
+def update_model():
+    model = request.form["value"]
+    if model == "words":
+        camera.updateModel(0)
+    else:
+        camera.updateModel(1)
+    return ("nothing")
+
+@views.route('/get_words', methods=['POST', 'GET'])
+def get_words():
+    wordList = camera.wordList
+    # this should return a jsonified format of the words in the class myWords.words list
+    return jsonify({'results':wordList})
 
 @views.route('/video_feed')
 def video_feed():
     #Video streaming route. Put this in the src attribute of an img tag
-    return Response(activateModel(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(camera.baseRoutine(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @views.route('/translate/fromASL', methods=['POST', 'GET'])
 def fromASL():
-    global switch, camera
-    if request.method == 'POST':
-        if request.form.get('stop') == 'Stop Translation':
-            print('pressed!')
-            if switch == 1:
-                switch = 0
-                camera.release()
-                cv2.destroyAllWindows()
-            else:
-                camera = cv2.VideoCapture(0)
-                switch=1
-    elif request.method=='GET':
-        return render_template("from_asl.html")
     return render_template("from_asl.html")
+
 
 @views.route('/translate/toASL', methods=['POST', 'GET'])
 def toASL():

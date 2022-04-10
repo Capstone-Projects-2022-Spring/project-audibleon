@@ -24,20 +24,10 @@
 
 {% block content %}
 <div class="d-grid gap-4 col-5 mx-auto d-md-block">
-  <button class="btn btn-primary btn-lg" type="submit" onclick="location.href = '/translate/fromASL';">Translate from ASL</button>
-  <button class="btn btn-primary btn-lg" type="submit" onclick="location.href = '/translate/toASL';">Translate to ASL</button>
-  <button class="btn btn-primary btn-lg" type="submit" onclick="location.href = '/translate/audio';">Audio to Text</button>
+  <button class="btn btn-primary btn-lg" type="submit" onclick="location.href = '/translate/fromASL';">ASL to Text</button>
+  <button class="btn btn-primary btn-lg" type="submit" onclick="location.href = '/translate/toASL';">Text to ASL</button>
+  <button class="btn btn-primary btn-lg" type="submit" onclick="location.href = '/translate/audio';">Audio to ASL</button>
   <button class="btn btn-primary btn-lg" type="submit" onclick="location.href = '/translate/connect';">Connect Online</button>
 </div>
 
-<!--<div class="container">
-    <div class="row">
-        <div class="col-lg-8  offset-lg-2">
-            <form method="post">
-                <input type="submit" value="Start Translation" />
-            </form>
-            <img src="{{ url_for('views.video_feed') }}">
-        </div>
-    </div>
-</div>-->
 {% endblock %}

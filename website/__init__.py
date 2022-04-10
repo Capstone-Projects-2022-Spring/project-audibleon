@@ -18,10 +18,8 @@ socketio = SocketIO()
 login_manager = LoginManager()
 
 def create_app():
-    
     # Create the Object of Flask
     app = Flask(__name__)
-    #app.config['SECRET_KEY'] = 'as;dlfkja;sdlkjf'
 
     # Load the Configuration from the config.py file
     app.config.from_object(Config)
@@ -36,7 +34,6 @@ def create_app():
     login_manager.init_app(app)
 
     with app.app_context():
-
         # Import Views and Auth (Routes)
         from .views import views
         from .auth import auth
