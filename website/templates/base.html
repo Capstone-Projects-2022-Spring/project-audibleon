@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, intial-scale=1"/>
+        <meta name="viewport" content="width=device-width, intial-scale=1.0"/>
 
         <!-- Load Bootstrap -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -13,9 +13,6 @@
           crossorigin="anonymous"
         />
 
-        <!-- Load Bootstrap Icons -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-
         <!-- Load Google Material Icons -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -25,16 +22,12 @@
         <!-- Load jQuery Library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-        <!-- Load JavaScript Bundle With Popper JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
         <!-- video.js base CSS -->
         <link href="https://vjs.zencdn.net/7.18.1/video-js.css" rel="stylesheet" />
 
         <!-- Load JavaScript Files -->
         <script src="{{url_for('static', filename='chat_waitingroom.js')}}"></script>
         <script src="{{url_for('static', filename='chatroom_ui.js')}}"></script>
-        <!-- <script src="{{url_for('static', filename='chatroom_networking.js')}}"></script> -->
 
         <style>
             ::-moz-selection { /* Code for Firefox */
