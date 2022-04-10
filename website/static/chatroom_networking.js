@@ -24,7 +24,7 @@ function startCamera() {
         camera_allowed = true;
         setAudioMuteState(audioMuted);
         setVideoMuteState(videoMuted);
-
+        // Start the SocketIO Connection
         socket.connect();
     }).catch((e)=>{
         console.log("getUserMedia Error! ", e);

@@ -5,21 +5,21 @@ document.addEventListener("DOMContentLoaded", (event)=>{
     myVideo = document.getElementById("local_vid");
     myVideo.onloadeddata = ()=>{console.log("W, H: ", myVideo.videoWidth, ", ", myVideo.videoHeight);};
     
-    var muteButton = document.getElementById("bttn_mute");
-    var muteVideoButton = document.getElementById("bttn_vid_mute");
-    var callEndButton = document.getElementById("call_end");
+    var muteBttn = document.getElementById("bttn_mute");
+    var muteVidBttn = document.getElementById("bttn_vid_mute");
+    var callEndBttn = document.getElementById("call_end");
 
-    muteButton.addEventListener("click", (event)=>{
+    muteBttn.addEventListener("click", (event)=>{
         audioMuted = !audioMuted;
         setAudioMuteState(audioMuted);
     });
 
-    muteVideoButton.addEventListener("click", (event)=>{
+    muteVidBttn.addEventListener("click", (event)=>{
         videoMuted = !videoMuted;
         setVideoMuteState(videoMuted);
     });
 
-    callEndButton.addEventListener("click", (event)=>{
+    callEndBttn.addEventListener("click", (event)=>{
         window.location.replace("/");
     });
 

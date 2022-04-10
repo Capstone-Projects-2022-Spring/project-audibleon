@@ -5,11 +5,11 @@ document.addEventListener("DOMContentLoaded", (event)=>{
 
     var muteAudioField = document.getElementById("mute_audio_inp");
     var muteVideoField = document.getElementById("mute_video_inp");
-    var muteButton = document.getElementById("bttn_mute");
-    var muteVideoButton = document.getElementById("bttn_vid_mute");
+    var muteBttn = document.getElementById("bttn_mute");
+    var muteVidBttn = document.getElementById("bttn_vid_mute");
     var myVideo = document.getElementById("local_vid");
 
-    muteButton.addEventListener("click", (event)=>{
+    muteBttn.addEventListener("click", (event)=>{
         audioMuted = !audioMuted;
         let local_stream = myVideo.srcObject;
         local_stream.getAudioTracks().forEach((track)=>{track.enabled = !audioMuted;});
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", (event)=>{
         document.getElementById("mute_icon").innerText = (audioMuted)? "mic_off": "mic";
     });
 
-    muteVideoButton.addEventListener("click", (event)=>{
+    muteVidBttn.addEventListener("click", (event)=>{
         videoMuted = !videoMuted;
         let local_stream = myVideo.srcObject;
         local_stream.getVideoTracks().forEach((track)=>{track.enabled = !videoMuted;});

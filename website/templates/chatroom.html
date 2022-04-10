@@ -1,11 +1,11 @@
+<!DOCTYPE html>
 {% extends 'base.html' %}
+{% load static %}
 
-{% block style %}
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{% static 'chatroom.css' %}">
 
-    <!-- Custome CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='chatroom.css') }}">
-
-{% endblock %}
+{% block style %}{% endblock %}
 
 <script type="text/javascript">
     var myRoomId = "{{ room_id }}";
