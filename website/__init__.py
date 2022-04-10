@@ -2,9 +2,17 @@ from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_socketio import SocketIO
+
+# Next Two Lines are to Ensure there are not too many Packets in Payload
+from engineio.payload import Payload
+Payload.max_decode_packets = 16
 
 # Initialize the Database Variable
 db = SQLAlchemy()
+
+# Initialize the SocketIO Variable
+socketio = SocketIO()
 
 # Initialize the Login Manager Variable
 login_manager = LoginManager()
@@ -20,6 +28,9 @@ def create_app():
 
     # Initialize the Application for the use with this Database Setup
     db.init_app(app)
+
+    # Initialize the Application for the use with SocketIO
+    socketio.init_app(app)
 
     # Initialize the Application for the use with the Login Manager
     login_manager.init_app(app)
