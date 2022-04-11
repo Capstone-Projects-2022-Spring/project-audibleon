@@ -3,6 +3,10 @@
 
 {% block style %}{% endblock %}
 
+{% block script %}
+<script src="{{ url_for('static', filename='chat_waitingroom.js') }}"></script>
+{% endblock %}
+
 {% block title %}Chat Waiting Room [{{ room_id }}]{% endblock %}
 
 {% block content %}
