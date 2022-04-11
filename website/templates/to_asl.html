@@ -89,7 +89,7 @@
     console.log(videos)
 
     videos.forEach(video => {
-        let vidName = '{{ url_for('views.display_video', filename=video) }}'+ '/' + video;
+        let vidName = video;
         console.log(vidName);
         let resource = {
             sources: [{

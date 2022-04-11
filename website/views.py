@@ -1,11 +1,15 @@
+import os
+from mimetypes import guess_extension
+import speech_recognition as sr
 from flask_socketio import emit, join_room, leave_room
-from flask import Blueprint, Response, render_template, request, url_for, jsonify, session
+from flask import Blueprint, Response, render_template, request, url_for, jsonify, session, make_response
 from flask_login import login_required, current_user
 from werkzeug.utils import redirect
 from website import socketio
 from .models import User
 from text_to_asl import getVideoPath
 from camera import Camera
+import random, string
 
 views = Blueprint('views', __name__)
 
@@ -17,8 +21,6 @@ _name_of_sid = {}
 # Camera dictionary
 global cameras
 cameras = {}
-# global camera
-# camera = Camera()
 
 # ------ Routes and Sockets for From ASL -------- #
 @socketio.on('connect', namespace='/from_asl')
@@ -61,13 +63,11 @@ def update_model():
     model = request.form["value"]
     if model == "words":
         # camera.updateModel(0)
-
         cameras[session['username']].updateModel(0)
     else:
         # camera.updateModel(1)
         cameras[session['username']].updateModel(1)
     return("nothing")
-
 
 @views.route('/get_words', methods=['POST', 'GET'])
 def get_words():
@@ -103,7 +103,6 @@ def fromASL():
         print("camera created")
     return render_template("from_asl.html")
 
-
 @views.route('/translate/toASL', methods=['POST', 'GET'])
 @login_required
 def toASL():
@@ -117,25 +116,40 @@ def toASL():
     else:
         return render_template("to_asl.html")
 
-@views.route('/display/<filename>')
-def display_video(filename):
-    print('display_video filename:'+filename)
-    return redirect(url_for('static', filename='videos/'+filename), code=301)
+@views.route('/translate/toASL2', methods=['POST', 'GET'])
+@login_required
+def toASL2():
+    if request.method == 'POST':
+        data = request.form.get('text')
+        json = getVideoPath(data)
+
+        print("json ", json)
+        return json
+    else:
+        return make_response('')
 
 @views.route('/translate/audio', methods=['POST', 'GET'])
 @login_required
 def audioToText():
     print("reached audio to text page")
-    return render_template("index.html")
+    return render_template("audio.html")
 
-@views.route('/translate/connect', methods=['POST', 'GET'])
+@views.route('/audiorecog', methods=['POST', 'GET'])
 @login_required
-def onlineConnect():
-    if request.method == 'POST':
-        print(request.form)
-        return render_template("connect.html", translating=True)
+def audiorecog():
+    print('reached upload audio')
+    if 'audio_file' in request.files:
+        file = request.files['audio_file']
+        if file:
+            recognizer = sr.Recognizer()
+            audioFile = sr.AudioFile(file)
 
-    return render_template("connect.html")
+            with audioFile as source:
+                data = recognizer.record(source)
+            transcript = recognizer.recognize_google(data, key=None)
+            return make_response(transcript, 200)
+
+        return make_response('', 200)
 
 @views.route('/')
 @login_required
