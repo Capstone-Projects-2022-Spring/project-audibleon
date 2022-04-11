@@ -15,13 +15,13 @@ def base64ToOpenCV(base64_img):
     img = cv2.imdecode(im_arr, flags=cv2.IMREAD_COLOR)
     return img
 
+
 def openCVTobase64(opencv_img):
     # img = cv2.imread(opencv_img)
     _, im_arr = cv2.imencode('.jpg', opencv_img)
     im_bytes = im_arr.tobytes()
-    # im_b64 = base64.b64encode(im_bytes)
-    # return im_b64
-    return im_bytes
+    im_b64 = base64.b64encode(im_bytes)
+    return im_b64
 
 class Camera(object):
     def __init__(self):
@@ -30,14 +30,18 @@ class Camera(object):
         self.wordList = []
         self.modelType = 0
 
+        # self.cam = cv2.VideoCapture(0)
+
         self.words = wordsModel()
         self.letters = letterModel()
 
-        self.cam = cv2.VideoCapture(0)
+        thread = threading.Thread(target=self.keep_processing, args=())
+        thread.daemon = True
+        thread.start()
 
-        # thread = threading.Thread(target=self.keep_processing, args=())
-        # thread.daemon = True
-        # thread.start()
+    def restartModel(self):
+        self.to_output.clear()
+        self.to_process.clear()
 
     def updateModel(self, num):
         if num < 1:
@@ -45,23 +49,23 @@ class Camera(object):
         else:
             self.modelType = 1
 
-    def baseRoutine(self):
-        while True:
-            success, frame = self.cam.read()
-            if success:
-
-                frame = cv2.flip(frame, 1)
-
-                if self.modelType == 0:
-                    output_img = self.processWordModel(frame)
-                else:
-                    output_img = self.processLettersModel(frame)
-
-                _, im_arr = cv2.imencode('.jpg', output_img)
-                frame = im_arr.tobytes()
-                yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-            else:
-                pass
+    # def baseRoutine(self):
+    #     while True:
+    #         success, frame = self.cam.read()
+    #         if success:
+    #
+    #             frame = cv2.flip(frame, 1)
+    #
+    #             if self.modelType == 0:
+    #                 output_img = self.processWordModel(frame)
+    #             else:
+    #                 output_img = self.processLettersModel(frame)
+    #
+    #             _, im_arr = cv2.imencode('.jpg', output_img)
+    #             frame = im_arr.tobytes()
+    #             yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+    #         else:
+    #             pass
 
     def process_one(self):
         if not self.to_process:
@@ -71,27 +75,61 @@ class Camera(object):
         # convert to openCV format
         input_img = base64ToOpenCV(input_str)
         # flip horizontally before using for input
+        # IF TURNING OFF MODEL HIDE THIS LINE
         input_img = cv2.flip(input_img, 1)
 
-        if self.modelType == 1:
+        ## IF TURNING OFF MODEL ENABLE THIS LINE
+        # output_img = cv2.flip(input_img, 1)
+
+        ## IF TURNING OFF MODEL HIDE THESE FOUR LINES
+        if self.modelType == 0:
             output_img = self.processWordModel(input_img)
         else:
             output_img = self.processLettersModel(input_img)
 
-        _, im_arr = cv2.imencode('.jpg', output_img)
-        im_bytes = im_arr.tobytes()
-        self.to_output.append(im_bytes)
-
-        # # output_str is a base64 string in ascii
-        # output_bytes = openCVTobase64(input_img)
+        # output_str is a base64 string in ascii
+        output_str = openCVTobase64(output_img)
 
         # convert eh base64 string in ascii to base64 string in _bytes_
-        # self.to_output.append(binascii.a2b_base64(output_str))
+        self.to_output.append(binascii.a2b_base64(output_str))
+
+
+        # _, im_arr = cv2.imencode('.jpg', output_img)
+
+        # self.to_output.append(im_arr)
+        # im_bytes = im_arr.tobytes()
+        #
+        # im_b64 = base64.b64encode(im_bytes)
+        #
+        # # self.to_output.append(im_bytes)
+        #
+        # # # output_str is a base64 string in ascii
+        # # output_bytes = openCVTobase64(input_img)
+        #
+        # # convert eh base64 string in ascii to base64 string in _bytes_
+        # self.to_output.append(binascii.a2b_base64(im_b64))
 
     def keep_processing(self):
         while True:
             self.process_one()
             sleep(0.01)
+
+        # while True:
+        #     success, frame = self.cam.read()
+        #     if success:
+        #         frame = cv2.flip(frame, 1)
+        #
+        #         if self.modelType == 0:
+        #             output_img = self.processWordModel(frame)
+        #         else:
+        #             output_img = self.processLettersModel(frame)
+        #
+        #         _, im_arr = cv2.imencode('.jpg', output_img)
+        #         self.to_output.append(im_arr)
+        #         # frame = im_arr.tobytes()
+        #         # yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        #     else:
+        #         pass
 
     def enqueue_input(self, input):
         self.to_process.append(input)

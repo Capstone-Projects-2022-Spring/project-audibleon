@@ -1,10 +1,11 @@
 from email import message
 from flask import Blueprint, Response, render_template, request, make_response, url_for, session, jsonify
 from flask_socketio import emit, join_room, leave_room
-from flask_login import login_required
+from flask_login import login_required, current_user
 from werkzeug.utils import redirect
 from website import socketio
 from .models import User
+import cv2
 from text_to_asl import getVideoPath
 from camera import Camera
 
@@ -15,42 +16,96 @@ _users_in_room = {}
 _room_of_sid = {}
 _name_of_sid = {}
 
-global camera
-camera = Camera()
+# Camera dictionary
+global cameras
+cameras = {}
+# global camera
+# camera = Camera()
+
+# ------ Routes and Sockets for From ASL -------- #
+@socketio.on('connect', namespace='/from_asl')
+def connect_camera():
+    if session['username'] not in cameras:
+        cameras[session['username']] = Camera()
+        print("camera created")
+    print("client connected")
+
+@socketio.on('input image', namespace='/from_asl')
+def queue_image(input):
+    # split input string
+    input = input.split(",")[1]
+    # camera.enqueue_input(input)
+    global cameras
+    cameras[session['username']].enqueue_input(input)
 
 @views.route('/clear_list', methods=['POST'])
+@login_required
 def clear_list():
-    print(camera.wordList)
-    camera.wordList.clear()
-    print(camera.wordList)
+    # camera.wordList.clear()
+    global cameras
+    cameras[session['username']].wordList.clear()
+    return ("nothing")
+
+@views.route('/restart', methods=['POST'])
+@login_required
+def restart():
+    # camera.wordList.clear()
+    global cameras
+    cameras[session['username']].restartModel()
     return ("nothing")
 
 @views.route ('/update_model', methods=['POST'])
+@login_required
 def update_model():
+    global cameras
     model = request.form["value"]
     if model == "words":
-        camera.updateModel(0)
+        # camera.updateModel(0)
+
+        cameras[session['username']].updateModel(0)
     else:
-        camera.updateModel(1)
-    return ("nothing")
+        # camera.updateModel(1)
+        cameras[session['username']].updateModel(1)
+    return("nothing")
+
 
 @views.route('/get_words', methods=['POST', 'GET'])
 def get_words():
-    wordList = camera.wordList
+    # wordList = camera.wordList
+
+    global cameras
+    wordList = cameras[session['username']].wordList
     # this should return a jsonified format of the words in the class myWords.words list
     return jsonify({'results':wordList})
 
+def generateVideo(username):
+    # function to generate video stream from queue of output images
+    while True:
+        # frame = camera.get_frame()
+        global cameras
+        frame = cameras[username].get_frame()
+        # frame = frame.tobytes()
+        yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+
 @views.route('/video_feed')
+@login_required
 def video_feed():
     #Video streaming route. Put this in the src attribute of an img tag
-    return Response(camera.baseRoutine(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(generateVideo(session['username']), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @views.route('/translate/fromASL', methods=['POST', 'GET'])
+@login_required
 def fromASL():
+    session['username'] = current_user.username
+    if session['username'] not in cameras:
+        cameras[session['username']] = Camera()
+        print("camera created")
     return render_template("from_asl.html")
 
 
 @views.route('/translate/toASL', methods=['POST', 'GET'])
+@login_required
 def toASL():
     if request.method == 'POST':
         data = request.form.get('text')
