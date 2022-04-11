@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,15 +9,35 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous"/>
+
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Video.js Base CSS -->
+    <link href="https://vjs.zencdn.net/7.18.1/video-js.css" rel="stylesheet" />
+
+    <style>
+
+        ::-moz-selection { /* Code for Firefox */
+            color: white;
+            background: #f2c738;
+        }
+
+        ::selection {
+            color: white;
+            background: #f2c738;
+        }
+
+        {% block style %}
+        {% endblock %}
+
+    </style>
+
     <title>{% block title %}Home{% endblock %}</title>
 
 </head>
-
-{% block content %}
-
-
-
-{% endblock %}
 
 <body>
     
@@ -67,11 +86,14 @@
 
     <!-- ***************** Header Area End ***************** -->
 
+    {% block content %}
+
+    {% endblock %}
 
     <!-- ***************** All JavaScript Start ***************** -->
 
     <!-- jQuery JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
     </script>
 
     <!-- Popper JS -->
@@ -82,14 +104,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
     </script>
 
+    <!-- SocketIO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha512-v8ng/uGxkge3d1IJuEo6dJP8JViyvms0cly9pnbfRxT6/31c3dRWxIiwGnMSWwZjHKOuY3EVmijs7k1jz/9bLA==" crossorigin="anonymous"></script>
+
     <!-- All JS -->
     <script src="https://vjs.zencdn.net/7.18.1/video.min.js"></script>
-    <script src="{% static 'videojs-playlist.min.js' %}"></script>
+    <script src="{{ url_for('static', filename='videojs-playlist.min.js') }}"></script>
     <script src="//cdn.sc.gl/videojs-hotkeys/0.2/videojs.hotkeys.min.js"></script>
 
-    <script src="{% static 'chat_waitingroom.js' %}"></script>
-    <script src="{% static 'chatroom_ui.js' %}"></script>
-    <script src="{% static 'chatroom_networking.js' %}"></script>
+    <!-- <script src="{{ url_for('static', filename='chat_waitingroom.js') }}"></script> -->
+    <!-- <script src="{{ url_for('static', filename='chatroom_ui.js') }}"></script> -->
+    <!-- <script src="{{ url_for('static', filename='chatroom_networking.js') }}"></script> -->
     
     {% block script %}
     {% endblock %}
