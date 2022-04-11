@@ -65,6 +65,9 @@ class User(UserMixin, db.Model):
 
         return (self.audibleon_user_id)
 
+    def get_status(self):
+        return (self.user_impairment)
+
     def set_password(self, password):
 
         # Create Hashed Password

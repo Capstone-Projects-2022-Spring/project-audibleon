@@ -1,11 +1,9 @@
-from email import message
-from flask import Blueprint, Response, render_template, request, make_response, url_for, session, jsonify
 from flask_socketio import emit, join_room, leave_room
+from flask import Blueprint, Response, render_template, request, url_for, jsonify, session
 from flask_login import login_required, current_user
 from werkzeug.utils import redirect
 from website import socketio
 from .models import User
-import cv2
 from text_to_asl import getVideoPath
 from camera import Camera
 
@@ -52,6 +50,8 @@ def restart():
     # camera.wordList.clear()
     global cameras
     cameras[session['username']].restartModel()
+
+    #camera.wordList.clear()
     return ("nothing")
 
 @views.route ('/update_model', methods=['POST'])
@@ -123,14 +123,19 @@ def display_video(filename):
     return redirect(url_for('static', filename='videos/'+filename), code=301)
 
 @views.route('/translate/audio', methods=['POST', 'GET'])
+@login_required
 def audioToText():
     print("reached audio to text page")
     return render_template("index.html")
 
 @views.route('/translate/connect', methods=['POST', 'GET'])
+@login_required
 def onlineConnect():
-    print("reached online connection page")
-    return render_template("index.html")
+    if request.method == 'POST':
+        print(request.form)
+        return render_template("connect.html", translating=True)
+
+    return render_template("connect.html")
 
 @views.route('/')
 @login_required
@@ -140,7 +145,6 @@ def home():
 @views.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-
     return render_template("profile.html")
 
 @views.route('/phrases')
