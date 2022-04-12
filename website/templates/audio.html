@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% block title %}Audio to ASL{% endblock %}
+{% block style %}
+    .column {
+      float: left;
+      width: 50%;
+      align: center;
+    }
+    .btn {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    .audio {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+{% endblock %}
+<!--<script src="{{ url_for('static', filename='recording.js') }}"></script>-->
+
+{% block content%}
+ <div class="row">
+  <div class="column">
+      <button class="btn btn-primary btn-lg" id="recordButton" value="Start Recording">Start Recording</button>
+      <button class="btn btn-danger btn-lg" id="stopButton" value="Stop Recording" disabled>Stop Recording</button>
+
+      <audio id="audioPlay" controls></audio>
+        <br>
+        <h4>Transcribed Text</h4>
+        <textarea class="form-control" id="words" rows="6" disabled readonly></textarea>
+  </div>
+    <div class="column">
+    <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" autoplay controls width="640px" height="360px">
+      </video>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+<script src="/static/recording.js"></script>
+<script>
+URL = window.URL || window.webkitURL;
+var gumStream, rec, input;
+
+var AudioContext = window.AudioContext || window.webkitAudioContext;
+var audioContext = new AudioContext;
+
+var recordButton = document.getElementById("recordButton");
+var stopButton = document.getElementById("stopButton");
+var playAudio = document.getElementById('audioPlay');
+var textArea = document.getElementById('words')
+
+recordButton.addEventListener("click", startRecording);
+stopButton.addEventListener("click", stopRecording);
+
+function startRecording() {
+    console.log("recordButton clicked");
+
+    var constraints = {
+        audio: true,
+        video: false
+    }
+
+    recordButton.disabled = true;
+    stopButton.disabled = false;
+
+    navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+        gumStream = stream;
+        input = audioContext.createMediaStreamSource(stream);
+        rec = new Recorder(input, {
+            numChannels: 1
+        })
+        rec.record()
+        console.log("Recording started");
+    }).catch(function(err) {
+        recordButton.disabled = false;
+        stopButton.disabled = true;
+    });
+}
+
+function stopRecording() {
+    console.log("stopButton clicked");
+
+    stopButton.disabled = true;
+    recordButton.disabled = false;
+
+    rec.stop();
+    gumStream.getAudioTracks()[0].stop();
+
+    rec.exportWAV(createDownloadLink);
+}
+
+function createDownloadLink(blob) {
+    var url = URL.createObjectURL(blob);
+    var au = document.createElement('audio');
+
+
+    au.controls = true;
+    au.src = url;
+    playAudio.src = window.URL.createObjectURL(blob)
+
+    let formData = new FormData();
+    formData.append("audio_file", blob);
+
+    $.ajax({
+        type: 'POST',
+        url: "{{ url_for('views.audiorecog') }}",
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false
+    }).done(function(data){
+        console.log(data)
+        textArea.value = data;
+        getVideoPlaylist(data);
+    });
+}
+
+function getVideoPlaylist(data){
+    let formData = new FormData()
+    formData.append('text', data)
+    $.ajax({
+        type: 'POST',
+        url: "{{ url_for('views.toASL2') }}",
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false
+    }).done(function(data){
+        console.log(data)
+
+        var videos = JSON.parse(data.replace(/&#34;/g,'"'));
+
+        let resources = [];
+
+        videos.forEach(video => {
+            let vidName = video;
+            console.log(vidName);
+            let resource = {
+                sources: [{
+                    src: vidName,
+                    type: 'video/mp4'
+                }],
+            }
+            resources.push(resource)
+        });
+        var player = videojs('videoPlayer');
+        player.playlist(resources);
+        player.playlist.autoadvance(0);
+        });
+}
+</script>
+<!--var recorder, chunks;-->
+
+<!--var recordButton = document.getElementById("record");-->
+<!--var stopButton = document.getElementById("stop");-->
+
+<!--recordButton.addEventListener("click", startRecording);-->
+<!--stopButton.addEventListener("click", stopRecording);-->
+
+
+<!--    function startRecording(){-->
+<!--        var constraints = {-->
+<!--            audio: true,-->
+<!--            video: false-->
+<!--        }-->
+
+<!--        navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {-->
+<!--            chunks =[]-->
+<!--            recorder = new MediaRecorder(stream)-->
+
+<!--            recorder.ondataavailable = event => {-->
+<!--                chunks.push(event.data);-->
+<!--            }-->
+
+<!--            recordButton.disabled = true;-->
+<!--            stopButton.disabled = false;-->
+
+<!--            recorder.start();-->
+<!--            console.log("Recording started");-->
+<!--        }).catch(function(error){-->
+<!--            recordButton.disabled = false;-->
+<!--            stopButton.disabled = true;-->
+<!--        });-->
+<!--    }-->
+
+<!--    function stopRecording(){-->
+<!--        recorder.stop();-->
+<!--        console.log("recording stopped")-->
+<!--        let blob = new Blob(chunks, {type: recorder.mimeType});-->
+<!--        chunks = []-->
+
+<!--        stopButton.disabled = true;-->
+<!--        recordButton.disabled = false;-->
+
+<!--        let formData = new FormData();-->
+<!--        formData.append("audio_file", blob);-->
+
+<!--        fetch(uploadURL, {-->
+<!--            method: "POST",-->
+<!--            cache: "no-cache",-->
+<!--            body: formData-->
+<!--          }).then(resp => {-->
+<!--            if (resp.status === 200) {-->
+<!--              window.location.reload(true);-->
+<!--            } else {-->
+<!--              console.error("Error:", resp)-->
+<!--            }-->
+<!--          }).catch(err => {-->
+<!--            console.error(err);-->
+<!--          });-->
+<!--    }-->
+<!--</script>-->
+<!--<script src="/static/recording.js" type="text/javascript"></script>-->
+
+{% endblock %}
+
+<!--<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>-->

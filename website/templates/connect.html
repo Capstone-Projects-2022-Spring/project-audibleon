@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% extends 'base_two.html' %}
+
+{% block style %}{% endblock %}
+
+{% block title %}Video Chat Connector{% endblock %}
+
+{% block content %}
+
+<div class="container text-center mt-5">
+    <h4>Welcome to Video Connect!</h4>
+    <p>
+        Enter a custom room name, and click join! <br> 
+        Share the room name with the people you'd like to chat with, so that they can join too!
+    </p>
+
+    <form id="room_form" method="POST" class="form shadow" style="max-width:400px; margin-left: auto; margin-right: auto;">
+        <div class="input-group mb-3">
+            <input type="text" name="room_id" id="room_id" class="form-control" placeholder="Custom Room Name" autofocus required>
+            <div class="invalid-feedback">Please fill out this field.</div>
+            <div class="input-group-append">
+                <input type="submit" value="Join" class="btn btn-primary">
+            </div>
+            
+        </div>
+    </form>
+</div>
+{% endblock %}

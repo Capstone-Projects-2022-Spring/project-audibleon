@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 {% extends 'base.html' %}
 {% block style %}
     body{
@@ -28,7 +29,7 @@
 
 {% block title%}Login{% endblock %}
 
-{% block body %}
+{% block content %}
 <div class="text-center mt-5">
 
     <img src="static/audibleON_logo.png" width="180">
@@ -36,26 +37,47 @@
 
     <form method="POST" style="max-width:400px;margin:auto;">
 
-        <!-- Email -->
-        <label for="email" class="sr-only">Email address</label>
-        <input type="email" id="email" class="form-control" placeholder="Email address" name="email"/>
+        <!-- The form.hidden_tag() template argument generates a hidden field that includes a token that is used to protect the form
+        against Cross-Site Request Forgery, also known as CSRF, attacks. -->
+        {{ form.hidden_tag() }}
 
-        <!-- Password -->
-        <label for="password" class="sr-only">Password</label>
-        <input type="password" id="password" placeholder="Password" class="form-control" name="password">
+        <div class="form-group">
 
-        <!-- Remember Me -->
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
+            <!-- Email -->
+            {{ form.email.label(class="sr-only") }}
+            {{ form.email(class="form-control") }}
+
+            {% for error in form.email.errors %}
+            <span style="color: red;">
+                [{{ error }}] - Email
+            </span>
+            {% endfor %}
+
+            <!-- Password -->
+            {{ form.password.label(class="sr-only") }}
+            {{ form.password(class="form-control") }}
+
+            {% for error in form.password.errors %}
+            <span style="color: red;">
+                [{{ error }}] - Password
+            </span>
+            {% endfor %}
+
+            <!-- Remember Me -->
+            <div class="checkbox">
+                {{ form.remember_me() }}
+                {{ form.remember_me.label }}
+            </div>
+
+            <!-- Submit/Login Button -->
+            {{ form.submit(class="btn btn-lg btn-primary btn-block") }}
+
         </div>
 
-        <!-- Submit/Login Button -->
-        <button class="btn btn-lg btn-primary btn-block">Login</button>
-
         <!-- Redirect to Sign-Up -->
-        <p>Don't have an account? Sign up <a href="/sign-up">here!</a></p>
+        <p>
+            Don't have an account? Sign-Up <a href="/sign-up">Here!</a>
+        </p>
 
     </form>
 

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 {% extends 'base.html' %}
 {% block style %}
     .list-group {
@@ -48,9 +49,16 @@
       <div class="col">
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="list-account" role="tabpanel" aria-labelledby="list-account-list">
-                Username: [ insert username ]<br>
-                Email address: [ inset user email address ]<br>
-                Member since: [ insert account creation date ]<br>
+                {% if current_user.is_authenticated %}
+
+                    Username: {{ current_user.username }}
+                    <br>
+                    Email Address: {{ current_user.user_email }}
+                    <br>
+                    Phone Number: {{ current_user.user_phone_number }}
+                    <br>
+
+                {% endif %}
             </div>
 
             <div class="tab-pane fade" id="list-bio" role="tabpanel" aria-labelledby="list-bio-list">
