@@ -1,5 +1,3 @@
-NOTE: CSV data files for training and testing data must be added to project folder manually due to file sizes. 
-
 # Audible ON
 
 ***
@@ -100,4 +98,5 @@ As technology and medicine advance each year, communication between hearing impa
 ## Resources
 https://google.github.io/mediapipe/solutions/hands.html </br>
 https://github.com/google/mediapipe/   </br>
+https://docs.google.com/document/d/14HzmpZ5YJK4XRxTyd8ePQ1GF_Er9Ku5S_vw0Y3al4l8/edit?usp=sharing
 ***
