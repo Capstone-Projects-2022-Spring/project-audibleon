@@ -59,14 +59,15 @@ As technology and medicine advance each year, communication between hearing impa
 ***
 <a name = "new-releases"></a>
 ## New Releases
+[v0.1.0-beta Audible ON Software Pre-Release](https://github.com/Capstone-Projects-2022-Spring/project-audibleon/releases/tag/v0.1.0-beta)
 
 <a name = "download-install-release"></a>
 ### How to Download and Install New Release
-
+Included in our latest pre-release v0.1.0-beta is an apk file corresponding to our current version of our mobile application. On your android device, click on the apk file provided in the release to begin downloading and installation. We recommend using SAI apks installer, however any installer recommended by android upon clicking on the file will suffice. As this mobile application is not setup officially with android, there will be warnings regarding android's lack of knowledge of the developer and the potential dangers of installing an app with an unknown author. These warnings are safe to be ignored to proceed with the installation process.
 
 <a name = "run-release"></a>
 ### How to Run New Release
-
+After the app is officially installed on your android device you can open it simply by clicking on the app icon in your apps folder. Once you have done so you can begin navigating the app and its minimal features. For example, by clicking 'Start', you will be taken to the 'Login' page, and by clicking 'Create an account' on that 'Login' page, you will be taken to a 'Sign Up' page. Both pages currently lack registering or logging in functionality, however for purposes of testing navigation, feel free to click the 'start' button. By clicking the 'Skip' button, you will navigate to the 'Home' page. It is on this page that only the 'Start Translation','Web Application', and 'Exit' buttons are functional. By clicking the 'Start Translation' button you will be directed to a 'Translation' page where you will be promted with permission request to use your camera. By allowing access, you can then click on the toggle switch in the top right of the page to open the camera. If you are not seeing frames, it is recommended that you press the back btton on the page and click the 'Start Translation' button again to resolve said conflict. Once you are seeing frames, you can either display frames in RGB (color) or grayscale by clcking on the word button in the top left part of the 'Translation' page. You can stop reading frames by clicking on the toggle switch again to move the slider back to its original position. Do this as many time as you would like. You can return to the 'Home' page by clicking the back button on the 'Translation' page or by using your device's back functionality. Once there you can view our currently deployed web application and click on some menu options to attempt to access other pages. Finally, by clicking the 'Exit' button on the 'Home' page, you can close out of the entire app.
 
 ***
 <a name = "team-contributions"></a>
