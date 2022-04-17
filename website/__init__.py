@@ -19,30 +19,30 @@ login_manager = LoginManager()
 
 def create_app():
     # Create the Object of Flask
-    app = Flask(__name__)
+    application = Flask(__name__)
 
     # Load the Configuration from the config.py file
-    app.config.from_object(Config)
+    application.config.from_object(Config)
 
     # Initialize the Application for the use with this Database Setup
-    db.init_app(app)
+    db.init_app(application)
 
     # Initialize the Application for the use with SocketIO
-    socketio.init_app(app)
+    socketio.init_app(application)
 
     # Initialize the Application for the use with the Login Manager
-    login_manager.init_app(app)
+    login_manager.init_app(application)
 
-    with app.app_context():
+    with application.app_context():
         # Import Views and Auth (Routes)
         from .views import views
         from .auth import auth
 
         # Register the Blueprints used in Views and Auth
-        app.register_blueprint(views, url_prefix='/')
-        app.register_blueprint(auth, url_prefix='/')
+        application.register_blueprint(views, url_prefix='/')
+        application.register_blueprint(auth, url_prefix='/')
 
         # Create SQL Tables for our Data Models
         db.create_all()
 
-        return app
+        return application
