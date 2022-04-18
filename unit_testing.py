@@ -1,5 +1,6 @@
 import unittest, numpy, cv2, base64, detection, alphabet, camera
 from camera import Camera
+from website.models import User
 import text_to_asl
 import speech_recognition as sr
 
@@ -8,14 +9,17 @@ class TestDetection(unittest.TestCase):
     def test_model_built(self):
         model = detection.wordsModel()
         self.assertTrue(model.built, True)
+
     def test_camera_created(self):
         model = detection.wordsModel()
         self.assertTrue(model.camera, True)
+
     def test_model_checkpoints(self):
         model = detection.wordsModel()
         self.assertTrue(model.checkpoints, True)
 
 class TestCamera(unittest.TestCase):
+
     def test_cameraClass_created(self):
         # tests to see if the camera is properly created with both model types
         camera = Camera()
