@@ -1,1 +1,1 @@
-web: gunicorn --worker-class eventlet -w 1 server:app
+web: gunicorn --bind :5000 --workers 2 application:app
