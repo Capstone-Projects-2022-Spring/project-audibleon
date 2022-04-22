@@ -24,7 +24,7 @@ def openCVTobase64(opencv_img):
     return im_b64
 
 class Camera(object):
-    def __init__(self):
+    def __init__(self, w: wordsModel, l: letterModel):
         self.to_process = []
         self.to_output = []
         self.wordList = []
@@ -32,8 +32,8 @@ class Camera(object):
 
         # self.cam = cv2.VideoCapture(0)
 
-        self.words = wordsModel()
-        self.letters = letterModel()
+        self.words = w
+        self.letters = l
 
         thread = threading.Thread(target=self.keep_processing, args=())
         thread.daemon = True
