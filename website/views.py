@@ -104,7 +104,7 @@ def toASL():
         print("json ", json)
         return json
     else:
-        return make_response('')
+        return render_template("to_asl.html")
 
 @views.route('/translate/audio', methods=['POST', 'GET'])
 @login_required
