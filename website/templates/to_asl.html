@@ -6,31 +6,29 @@
     .row {
       padding-top: 20px;
     }
+    .btn {
+        margin-top: 5px;
+    }
 {% endblock %}
 
 {% block content %}
 
-
-<div class="row">
-    <div class="col align-items-start"></div>
-    <div class="col align-items-center">
-        {% if videos %}
-        <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" autoplay controls width="640px" height="360px">
-        </video>
-        {% endif %}
-    </div>
-
-    <div class="col align-items-end"></div >
-</div>
-
 <div class="container">
-  <div class="row">
-    <div class="col text-center">
-        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="exampleModal" id="launchModal">
-          Enter Text
-        </button>
+   <div class="row">
+        <div class="d-flex justify-content-center ">
+            <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered"
+                   poster="static/audibleON_logo.png" autoplay controls width="640px" height="360px"
+                   preload="auto" playsinline="">
+            </video>
+        </div>
+   </div>
+    <div class="row">
+        <div class="col text-center">
+            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="exampleModal" id="launchModal">
+              Enter Text
+            </button>
+        </div>
     </div>
-  </div>
 </div>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -40,71 +38,84 @@
         <h5 class="modal-title" id="exampleModalLabel">Text to ASL</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-
-      <form id="text-to-translate" action="#" method="post">
-          <div class="modal-body">
-              <div class="mb-3">
-                <label for="message-text" class="col-form-label">Enter the text for translation to ASL below:</label>
-                <textarea class="form-control" name="text" id="message-text"></textarea>
-              </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Enter the text for translation to ASL below:</label>
+            <textarea class="form-control" name="text" id="message-text"></textarea>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Translate</button>
-          </div>
-      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="submit_text">Translate</button>
+      </div>
     </div>
   </div>
 </div>
-
-<!--while video is not made yet, spin-->
-<!--<div class="d-flex justify-content-center">-->
-<!--  <div class="spinner-border" role="status">-->
-<!--    <span class="sr-only">Loading...</span>-->
-<!--  </div>-->
-<!--</div>-->
-
-
 {% endblock %}
 
 
 {% block script %}
 <script>
-<!--   $(document).ready(function(){-->
-<!--      $("#exampleModal").modal('show');-->
-<!--   });-->
+    $(document).ready(function(){
+        $("#exampleModal").modal('show');
+    });
 
    $('#launchModal').on('click', function (e) {
-
         $("#exampleModal").modal('show');
-
     });
 
-    {% if videos %}
+   var textArea = document.getElementById('message-text')
 
-    var videos = '{{ videos }}';
-    let resources = [];
-
-    videos = JSON.parse(videos.replace(/&#34;/g,'"'));
-    console.log(videos)
-
-    videos.forEach(video => {
-        let vidName = video;
-        console.log(vidName);
-        let resource = {
-            sources: [{
-                src: vidName,
-                type: 'video/mp4'
-            }],
-        }
-        resources.push(resource)
+   $('#submit_text').click(function (){
+        message = textArea.value;
+        console.log(message);
+        textArea.value = '';
+       $("#exampleModal").modal('hide');
+        getVideoPlaylist(message);
     });
 
-    var player = videojs('videoPlayer');
-    player.playlist(resources);
-    player.playlist.autoadvance(0);
+   function getVideoPlaylist(data){
+    let formData = new FormData()
+    formData.append('text', data)
+    $.ajax({
+        type: 'POST',
+        url: "{{ url_for('views.toASL') }}",
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false
+    }).done(function(data){
+        console.log(data)
 
-    {% endif %}
+        var videos = JSON.parse(data.replace(/&#34;/g,'"'));
+
+        let resources = [];
+
+        videos.forEach(video => {
+            let vidName = video;
+
+            // preload video source
+            var preloadLink = document.createElement("link");
+            preloadLink.href = vidName;
+            preloadLink.rel = "preload";
+            preloadLink.as = "video";
+            preloadLink.type="video/mp4";
+            document.head.appendChild(preloadLink);
+
+            console.log(vidName);
+            let resource = {
+                sources: [{
+                    src: vidName,
+                    type: 'video/mp4'
+                }],
+            }
+            resources.push(resource)
+        });
+        var player = videojs('videoPlayer');
+        player.playlist(resources);
+        player.playlist.autoadvance(0);
+        });
+    }
 
 </script>
 {% endblock %}
