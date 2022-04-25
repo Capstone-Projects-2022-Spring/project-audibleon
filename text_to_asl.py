@@ -1,6 +1,15 @@
 import json, os, requests, string
+from nltk.corpus import wordnet as wn
+from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
+from nltk import pos_tag
+from collections import defaultdict
 from bs4 import BeautifulSoup
+
+tag_map = defaultdict(lambda: wn.NOUN)
+tag_map['J'] = wn.ADJ
+tag_map['V'] = wn.VERB
+tag_map['R'] = wn.ADV
 
 def getVideoPath(s):
 
@@ -20,8 +29,15 @@ def getTokensFromString(s):
     s = s.translate(translator)
     tokenized = word_tokenize(s)
 
+    lemmatized = []
+
+    lemma_function = WordNetLemmatizer()
+    for token, tag in pos_tag(tokenized):
+        lemma = lemma_function.lemmatize(token, tag_map[tag[0]])
+        lemmatized.append(lemma)
+
     # should remove articles / useless words from list first
-    return tokenized
+    return lemmatized
 
 def getVideosFromTokens(tokens):
     URL = "https://www.signasl.org/sign/"
