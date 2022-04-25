@@ -46,6 +46,7 @@ class Camera(object):
         self.to_process.clear()
 
     def updateModel(self, num):
+        self.lastTen.clear()
         if num < 1:
             self.modelType = 0
         else:
