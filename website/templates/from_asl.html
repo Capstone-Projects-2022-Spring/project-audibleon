@@ -61,6 +61,23 @@
 
 {% block script %}
 <script>
+$(document).ready(function() {
+    var formData = {
+      'value': 'words'
+    };
+    console.log(formData);
+    $.ajax({
+          type: 'POST',
+          url: "{{ url_for('views.update_model') }}",
+          data: formData,
+          dataType: 'json',
+          encode: true
+      })
+      .done(function(data) {
+          console.log(data);
+      })
+});
+
  function clearList() {
         $.ajax({url: "{{ url_for('views.clear_list') }}", type: 'POST'})
             .done(function() {

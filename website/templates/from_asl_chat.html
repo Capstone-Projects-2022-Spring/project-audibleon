@@ -86,6 +86,7 @@
 
           <div id='scrollable' class="rounded border border-dark" ></div>
           <button type="button" class="btn btn-primary" id='scroller'>Scroll to bottom!</button>
+          <button class="btn btn-danger" type="submit" id='leave'>Leave</button>
       </div>
   </div>
 </div>
@@ -95,6 +96,23 @@
 {% block script %}
 
 <script>
+$(document).ready(function() {
+    clearList();
+    var formData = {
+      'value': 'words'
+    };
+    console.log(formData);
+    $.ajax({
+          type: 'POST',
+          url: "{{ url_for('views.update_model') }}",
+          data: formData,
+          dataType: 'json',
+          encode: true
+      })
+      .done(function(data) {
+          console.log(data);
+      })
+});
 
 function getAudio(){
     var updatedText = $.get("{{ url_for('views.get_words') }}");

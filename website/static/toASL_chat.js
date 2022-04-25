@@ -30,6 +30,12 @@ $(document).ready(function(){
         socket.emit('input-message', {'msg': message});
     });
 
+    $('#leave').click(function (){
+        socket.emit('leave-room', {});
+        setTimeout(() => { location.href = '/'; }, 1);
+
+    });
+
 });
 
 

@@ -8,6 +8,7 @@ from detection import wordsModel
 import tensorflow as tf
 from object_detection.utils import visualization_utils as viz_utils
 from alphabet import letterModel
+import nltk
 
 def base64ToOpenCV(base64_img):
     im_bytes = base64.b64decode(base64_img)
@@ -29,6 +30,7 @@ class Camera(object):
         self.to_output = []
         self.wordList = []
         self.modelType = 0
+        self.lastTen = []
 
         # self.cam = cv2.VideoCapture(0)
 
@@ -190,30 +192,37 @@ class Camera(object):
 
         newLetter = self.letters.getLetter(lmList, handsType)
 
-        if newLetter == '':
-            pass
-        elif len(self.wordList) == 0:
-            # there is nothing in the word list currently - this is the first entry
-            if (newLetter != ' ') and (newLetter != '*'):
-                self.wordList.append(newLetter)
-        else:
-            oldWord = next(reversed(self.wordList))
-            if len(oldWord) > 0:
-                oldLetter = oldWord[-1]
+        if len(self.lastTen) < 10:
+            self.lastTen.append(newLetter)
+        else: # this is the case that it is at 10 frames
+            frequency_distribution = nltk.FreqDist(self.lastTen)
+            newLetter = frequency_distribution.max()
+            self.lastTen.clear()
+
+            if newLetter == '':
+                pass
+            elif len(self.wordList) == 0:
+                # there is nothing in the word list currently - this is the first entry
+                if (newLetter != ' ') and (newLetter != '*'):
+                    self.wordList.append(newLetter)
             else:
-                oldLetter = ''
+                oldWord = next(reversed(self.wordList))
+                if len(oldWord) > 0:
+                    oldLetter = oldWord[-1]
+                else:
+                    oldLetter = ''
 
-            if oldLetter != newLetter:
-                string = oldWord+newLetter
-                if newLetter == '*':
-                    string = string[:-2]
-                self.wordList[len(self.wordList)-1] = string
+                if oldLetter != newLetter:
+                    string = oldWord+newLetter
+                    if newLetter == '*':
+                        string = string[:-2]
+                    self.wordList[len(self.wordList)-1] = string
 
-        if newLetter == ' ':
-            newLetter = 'SPACE'
-        elif newLetter == '*':
-            newLetter = 'DELETE'
+            if newLetter == ' ':
+                newLetter = 'SPACE'
+            elif newLetter == '*':
+                newLetter = 'DELETE'
 
-        cv2.putText(frame, newLetter, (0, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 3)
+            cv2.putText(frame, newLetter, (0, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 0, 0), 3)
 
         return frame

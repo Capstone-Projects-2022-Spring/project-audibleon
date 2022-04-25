@@ -87,6 +87,12 @@ $(document).ready(function(){
         restart();
     });
 
+    $('#leave').click(function (){
+        socket.emit('leave-room', {});
+        setTimeout(() => { location.href = '/'; }, 1);
+
+    });
+
     var myTimer = setInterval(updateText, 2000);
 
 

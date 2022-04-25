@@ -250,7 +250,7 @@ def text(message):
 @socketio.on("leave-room", namespace='/chat')
 def left(message):
     room = session['chat']["room_id"]
-    emit('status', {'msg': '(' + session['chat']["name"] + 'has left the room)\n'}, room=room)
+    emit('status', {'msg': '(' + session['chat']["name"] + ' has left the room)\n'}, room=room)
     leave_room(room)
     session['chat'] = None
 
