@@ -132,4 +132,5 @@ https://google.github.io/mediapipe/solutions/hands.html </br>
 https://github.com/google/mediapipe/</br>
 https://github.com/nicknochnack/RealTimeObjectDetection</br>
 https://www.signasl.org/ </br>
+https://docs.google.com/document/d/14HzmpZ5YJK4XRxTyd8ePQ1GF_Er9Ku5S_vw0Y3al4l8/edit?usp=sharing
 ***

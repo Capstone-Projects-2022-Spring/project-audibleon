@@ -52,18 +52,19 @@ def getVideosFromTokens(tokens):
 
         soup = BeautifulSoup(page.content, "lxml")
         results = soup.find(class_="col-md-12")
-        video_elements = results.find_all("div", itemprop="video")
 
-        for vid in video_elements:
-            if not found:
-                source = vid.find("source")
+        if results is not None:
+            video_elements = results.find_all("div", itemprop="video")
+            for vid in video_elements:
+                if not found:
+                    source = vid.find("source")
 
-                if source is not None:
-                    src = source["src"]
-                    found = True
-            else:
-                break
-        if src != '':
-            listClips.append(src)
+                    if source is not None:
+                        src = source["src"]
+                        found = True
+                else:
+                    break
+            if src != '':
+                listClips.append(src)
 
     return json.dumps(listClips)
