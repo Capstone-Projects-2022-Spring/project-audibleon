@@ -56,12 +56,21 @@ The AudibleON Platform is equipped with the following features:
 * Text to ASL feature does not give output in 'true' ASL form; to be more accurate to the needs of the deaf community, a robust natural language processing algorithm would need to be developed to capture the variety of grammatical rules used in constructing ASL sentences.
 * Deaf users in the chat room are unable to text their communication to other users and are limited only to the translated output from both the alphabet and the CNN models.
 * Login flashed message does not appear on Translate page immediately after logging in, but instead appears on next page that is accessed right after leaving the Translate page.
+* Mobile App: Sign up and login functionality are not connected to the database, therefore they are not functional.
+* Mobile App: Translation on the page after the 'start translation' button is clicked is not displaying output of letter detection to the screen, however it is detecting the different letters in the background.
+* Mobile App: both the search and menu icons on the action bar are not functional
+* Mobile App: User bio information can not be changed and Need Help? link does not work.
+* Mobile App: Text to ASL button begins a hardcoded set of videos to demonstrate proof of concept. It does not however actually use the text entered to display relating videos.
+* Mobile App: Save and Share buttons are not functional
+* Mobile App: Web Application no longer is accessible due to the running instance being closed
+* Mobile App: In joining Zoom meetings, you can not join meetings which only permit users from a specific organization.
 
 ***
 <a name = "technologies"></a>
 ## Technologies
 * Jupyter Notebook for training and testing models
 * Pycharm IDE
+* Android Studio
 
 ### Libraries
 Many libraries were utilized in the development of this project, and can be found in the ```requirements.txt``` file within the repository.
@@ -70,6 +79,9 @@ Many libraries were utilized in the development of this project, and can be foun
 * NumPy
 * OpenCV
 * Tensorflow
+* Zoom commonlib
+* Zoom mobilertc
+* YouTube Player API
 
 ***
 <a name = "new-releases"></a>
@@ -86,16 +98,17 @@ Following the successful installation of these packages, with your environment a
 
 To open the application with a reverse proxy (as demonstrated in the demo), ngrok can be used; to begin, set up a user account and password for your associated account [here](https://ngrok.com/). Follow the instructions to authenticate your account through the command line. When complete, enter the following command in the terminal to activate the reverse proxy: ```ngrok http 5000```. After starting up the AudibleON application using the instructions in the previous paragraph, follow the link generated in the terminal for the ngrok command to access the site online from any device.
 
-Releases:
+### Releases:
+[v1.1.0-beta Audible ON Software Release](https://github.com/Capstone-Projects-2022-Spring/project-audibleon/releases/tag/v1.1.0-beta)
 [v0.1.0-beta Audible ON Software Pre-Release](https://github.com/Capstone-Projects-2022-Spring/project-audibleon/releases/tag/v0.1.0-beta)
 
 <a name = "download-install-release"></a>
 ### How to Download and Install Mobile App Release
-Included in our latest pre-release v0.1.0-beta is an apk file corresponding to our current version of our mobile application. On your Android device, click on the apk file provided in the release to begin downloading and installation. We recommend using SAI apks installer, however any installer recommended by android upon clicking on the file will suffice. As this mobile application is not setup officially with android, there will be warnings regarding android's lack of knowledge of the developer and the potential dangers of installing an app with an unknown author. These warnings are safe to be ignored to proceed with the installation process.
+Included in our latest pre-release v1.1.0-beta is an apk file corresponding to our current version of our mobile application. On your Android device, click on the apk file provided in the release to begin downloading and installation. We recommend using SAI apks installer, however any installer recommended by android upon clicking on the file will suffice. As this mobile application is not setup officially with android, there will be warnings regarding android's lack of knowledge of the developer and the potential dangers of installing an app with an unknown author. These warnings are safe to be ignored to proceed with the installation process.
 
 <a name = "run-release"></a>
 ### How to Run Mobile App Release
-After the app is officially installed on your android device you can open it simply by clicking on the app icon in your apps folder. Once you have done so you can begin navigating the app and its minimal features. For example, by clicking 'Start', you will be taken to the 'Login' page, and by clicking 'Create an account' on that 'Login' page, you will be taken to a 'Sign Up' page. Both pages currently lack registering or logging in functionality, however for purposes of testing navigation, feel free to click the 'start' button. By clicking the 'Skip' button, you will navigate to the 'Home' page. It is on this page that only the 'Start Translation', 'Web Application', and 'Exit' buttons are functional. By clicking the 'Start Translation' button you will be directed to a 'Translation' page where you will be prompted with permission request to use your camera. By allowing access, you can then click on the toggle switch in the top right of the page to open the camera. If you are not seeing frames, it is recommended that you press the back button on the page and click the 'Start Translation' button again to resolve said conflict. Once you are seeing frames, you can either display frames in RGB (color) or grayscale by clicking on the word button in the top left part of the 'Translation' page. You can stop reading frames by clicking on the toggle switch again to move the slider back to its original position. Do this as many time as you would like. You can return to the 'Home' page by clicking the back button on the 'Translation' page or by using your device's back functionality. Once there you can view our currently deployed web application and click on some menu options to attempt to access other pages. Finally, by clicking the 'Exit' button on the 'Home' page, you can close out of the entire app.
+After the app is officially installed on your android device you can open it simply by clicking on the app icon in your apps folder. Once you have done so you can begin navigating the app and its minimal features. For example, by clicking 'Start', you will be taken to the 'Login' page, and by clicking 'Create an account' on that 'Login' page, you will be taken to a 'Sign Up' page. Both pages currently lack registering or logging in functionality, however for purposes of testing navigation, feel free to click the 'start' button. By clicking the 'Skip' button, you will navigate to the 'Home' page. It is on this page that only the 'Start Translation', 'Web Application', 'Text Translation', 'Join', and 'Exit' buttons are functional. By clicking the 'Start Translation' button you will be directed to a 'Translation' page where you will be prompted with permission request to use your camera. By allowing access, you can then click on the 'Start Camera' button in the top right of the page to open the camera. You can then see your hands being tracked in real-time. Unfortunately, the background detection of the letters you sign are not currently being displayed to the screen. To go back you can simply use your Android's device built-in back functionality and you will then return to the 'Home' page. Once there you can click on the 'Text Translation' button where you will be directed to the 'Text Translation' page. On this page you can type some text into the big box outlined in yellow and then click the 'Text to Speech' button to then hear the text read to you. By clicking the 'Text to ASL' button you will be directed to the 'Video' page where you will see three random videos play. This is due to us simply trying to provide a proof of concept for the Text to ASL functionality within our mobile application. To go back to the ‘Text Translation’ page you can again use your device’s back functionality and to go back to home from the aforementioned page you can hit the back button or use your phone’s back functionality. Once back on the ‘Home’ page you can select the ‘Web Application’ button, however the web application will fail to load as its previous running instance has been shutdown. Finally, you can hit the ‘Join’ button on the 'Home' page to join a Zoom meeting. By entering the meeting id and the username you can then click the blue ‘Join’ button to join a currently running meeting. This feature was implemented for the purposes of integrating Audible ON’s functionality in a familiar virtual conference platform for user convenience. Finally, by clicking the ‘Exit’ button you can close out of the entire app. Thank you for using Audible ON’s mobile application.
 
 ***
 <a name = "team-contributions"></a>
