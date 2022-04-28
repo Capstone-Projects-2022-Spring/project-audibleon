@@ -13,19 +13,20 @@ CUSTOM_MODEL_NAME = 'my_ssd_mobnet'
 CONFIG_PATH = MODEL_PATH+'/'+CUSTOM_MODEL_NAME+'/pipeline.config'
 
 class wordsModel(object):
+
     def __init__(self):
         self.configs = config_util.get_configs_from_pipeline_file(CONFIG_PATH)
         self.detection_model = model_builder.build(model_config=self.configs['model'], is_training=False)
-        print("model built")
+        self.built = True
 
         self.cap = cv2.VideoCapture(0)
-        print("camera created")
+        self.camera = True
 
         self.ckpt = tf.compat.v2.train.Checkpoint(model=self.detection_model)
         self.ckpt.restore(os.path.join(CHECKPOINT_PATH, 'ckpt-6')).expect_partial()
         self.category_index = label_map_util.create_category_index_from_labelmap(ANNOTATION_PATH + '/label_map.pbtxt')
         self.label_map = read_label_map(ANNOTATION_PATH + '/label_map.pbtxt')
-        print("checkpoints restored, label map created")
+        self.checkpoints = True
 
     @tf.function
     def detect_fn(self, image):
