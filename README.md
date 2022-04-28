@@ -56,6 +56,7 @@ The AudibleON Platform is equipped with the following features:
 * Deployment to AWS EC2 instance was attempted but while the majority of the Flask application was workable, the integration of the models onto the server resulted in significant errors that crash the server. To demonstrate the application's ability to serve multiple users, Ngrok was used during the demo and is recommend to create a reverse proxy for users to log onto the application as it runs on a local host.
 * Text to ASL feature does not give output in 'true' ASL form; to be more accurate to the needs of the deaf community, a robust natural language processing algorithm would need to be developed to capture the variety of grammatical rules used in constructing ASL sentences.
 * Deaf users in the chat room are unable to text their communication to other users and are limited only to the translated output from both the alphabet and the CNN models.
+* Login flashed message does not appear on Translate page immediately after logging in, but instead appears on next page that is accessed right after leaving the Translate page.
 
 ***
 <a name = "technologies"></a>
@@ -76,7 +77,7 @@ Many libraries were utilized in the development of this project, and can be foun
 ## Build, Install, and Run New Releases
 <a name = "configure-env"></a>
 ### Configure Environment
-In order to prepare your environment for building and running the AudibleON program, please follow [these detailed instructions](https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/install.html) for the creation of your environment to utilize the Tensorflow Object Detection API. For this project, Tensorflow v2.8.0 was used and can be installed on Windows or Linux following the above tutorial. Please note that this program will not run if your device does not have a GPU. If you do not have CUDA compatible GPU, that section of the tutorial can be skipped. Be sure to run the necessary installation confirmation commands listed in the document to confirm that you have correctly installed Tensorflow.
+In order to prepare your environment for building and running the AudibleON program, please follow [these detailed instructions](https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/install.html) for the creation of your environment to utilize the Tensorflow Object Detection API. For this project, Tensorflow v2.8.0 was used and can be installed on Windows or Linux following the above tutorial. If you do not have CUDA compatible GPU, that section of the tutorial can be skipped. Be sure to run the necessary installation confirmation commands listed in the document to confirm that you have correctly installed Tensorflow.
 
 Following the installation of Tensorflow and its necessary additional packages, please install the rest of the packages necessary in your Python environment using the following command with the requirements.txt file found in the repository.
 If using pip: ```pip install -r requirements.txt```
@@ -117,5 +118,6 @@ After the app is officially installed on your android device you can open it sim
 The following resources were used for the completion of this project.
 https://google.github.io/mediapipe/solutions/hands.html </br>
 https://github.com/google/mediapipe/</br>
+https://github.com/nicknochnack/RealTimeObjectDetection</br>
 https://www.signasl.org/ </br>
 ***
