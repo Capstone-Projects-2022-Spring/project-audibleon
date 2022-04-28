@@ -16,7 +16,6 @@ NOTE: RealTimeObjectDetection folder for training and testing model must be adde
     * [How to Run New Release](#run-release)
 4. [Team Contributions](#team-contributions)
     * [Meet Our Team](#team)
-    * [Contributions](#contributions)
 5. [Resources](#resources)
 
 
