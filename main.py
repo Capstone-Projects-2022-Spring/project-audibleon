@@ -11,5 +11,5 @@ if __name__ == '__main__':
     #app.run(debug=True)
 
     # Run the Flask Application using SocketIO
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=True, port=5000)
 

@@ -81,6 +81,9 @@ class User(UserMixin, db.Model):
         # Check Hashed Password
         return check_password_hash(self.user_password, password)
 
+    def update_username(self, username):
+        self.username = username
+
     def __repr__(self):
 
         return 'User {}'.format(self.username)

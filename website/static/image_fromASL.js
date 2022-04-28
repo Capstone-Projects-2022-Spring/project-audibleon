@@ -20,7 +20,7 @@ $(document).ready(function(){
     }
 
     socket.on('connect', function() {
-        console.log('Connected!');
+        console.log('Client video connected!');
     });
 
     var constraints = {
@@ -42,3 +42,5 @@ $(document).ready(function(){
         console.log(error);
       });
 });
+
+
