@@ -1,4 +1,4 @@
-NOTE: CSV data files for training and testing data must be added to project folder manually due to file sizes.
+NOTE: CSV data files for training and testing data must be added to project folder manually due to file sizes.</br>
 NOTE: RealTimeObjectDetection folder for training and testing model must be added to project folder manually due to file sizes.
 
 # Audible ON
