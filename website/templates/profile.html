@@ -42,7 +42,7 @@
       <div class="col-4">
         <div class="list-group" id="list-tab" role="tablist">
           <a class="list-group-item list-group-item-action active" id="list-account-list" data-bs-toggle="list" href="#list-account" role="tab" aria-controls="list-home">Account Info</a>
-          <a class="list-group-item list-group-item-action" id="list-bio-list" data-bs-toggle="list" href="#list-bio" role="tab" aria-controls="list-bio">User Bio</a>
+<!--          <a class="list-group-item list-group-item-action" id="list-bio-list" data-bs-toggle="list" href="#list-bio" role="tab" aria-controls="list-bio">User Bio</a>-->
           <a class="list-group-item list-group-item-action" id="list-settings-list" data-bs-toggle="list" href="#list-settings" role="tab" aria-controls="list-settings">Account Settings</a>
         </div>
       </div>
@@ -61,77 +61,77 @@
                 {% endif %}
             </div>
 
-            <div class="tab-pane fade" id="list-bio" role="tabpanel" aria-labelledby="list-bio-list">
-                  [ insert user bio here - this should be retrieved from database; if null, then don't print anything] <br>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Dui id ornare arcu odio ut sem nulla. Quis ipsum suspendisse ultrices gravida dictum fusce ut placerat orci.
-                <div class="accordion" id="userBio">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="userBio-headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#userBio-collapseOne" aria-expanded="false" aria-controls="userBio-collapseOne">
-                              Update User Bio
-                            </button>
-                        </h2>
-                        <div id="userBio-collapseOne" class="accordion-collapse collapse" aria-labelledby="userBio-headingOne">
-                            <div class="accordion-body">
-                                <form class="was-validated" method = "POST">
-                                    <textarea class="form-control" name="bio" id="validationTextarea" placeholder="Input user biography here" required></textarea>
-                                    <div class="invalid-feedback">
-                                      Please enter text above.
-                                    </div>
-                                    <div class="valid-feedback">
-                                      Looking good!
-                                    </div>
-                                    <div class="mb-3">
-                                        <button class="btn btn-primary" type="submit">Update bio</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion" id="userState">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="userState-headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#userState-collapseOne" aria-expanded="false" aria-controls="userBio-collapseOne">
-                              Update Status
-                            </button>
-                        </h2>
-                        <div id="userState-collapseOne" class="accordion-collapse collapse" aria-labelledby="userState-headingOne">
-                            <div class="accordion-body">
-                                <form>
-                                    <div class="form-group">
-                                        <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                          <label class="form-check-label" for="inlineRadio1">Deaf</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                          <label class="form-check-label" for="inlineRadio2">Hard of Hearing</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
-                                          <label class="form-check-label" for="inlineRadio3">Hearing</label>
-                                        </div>
-                                    </div>
-                                </form>
-                                <form>
-                                    <div class="form-group">
-                                        <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
-                                          <label class="form-check-label" for="inlineRadio4">Mute</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
-                                          <label class="form-check-label" for="inlineRadio5">Speaking</label>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!--            <div class="tab-pane fade" id="list-bio" role="tabpanel" aria-labelledby="list-bio-list">-->
+<!--                  [ insert user bio here - this should be retrieved from database; if null, then don't print anything] <br>-->
+<!--                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.-->
+<!--                Dui id ornare arcu odio ut sem nulla. Quis ipsum suspendisse ultrices gravida dictum fusce ut placerat orci.-->
+<!--                <div class="accordion" id="userBio">-->
+<!--                    <div class="accordion-item">-->
+<!--                        <h2 class="accordion-header" id="userBio-headingOne">-->
+<!--                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#userBio-collapseOne" aria-expanded="false" aria-controls="userBio-collapseOne">-->
+<!--                              Update User Bio-->
+<!--                            </button>-->
+<!--                        </h2>-->
+<!--                        <div id="userBio-collapseOne" class="accordion-collapse collapse" aria-labelledby="userBio-headingOne">-->
+<!--                            <div class="accordion-body">-->
+<!--                                <form class="was-validated" method = "POST">-->
+<!--                                    <textarea class="form-control" name="bio" id="validationTextarea" placeholder="Input user biography here" required></textarea>-->
+<!--                                    <div class="invalid-feedback">-->
+<!--                                      Please enter text above.-->
+<!--                                    </div>-->
+<!--                                    <div class="valid-feedback">-->
+<!--                                      Looking good!-->
+<!--                                    </div>-->
+<!--                                    <div class="mb-3">-->
+<!--                                        <button class="btn btn-primary" type="submit">Update bio</button>-->
+<!--                                    </div>-->
+<!--                                </form>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="accordion" id="userState">-->
+<!--                    <div class="accordion-item">-->
+<!--                        <h2 class="accordion-header" id="userState-headingOne">-->
+<!--                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#userState-collapseOne" aria-expanded="false" aria-controls="userBio-collapseOne">-->
+<!--                              Update Status-->
+<!--                            </button>-->
+<!--                        </h2>-->
+<!--                        <div id="userState-collapseOne" class="accordion-collapse collapse" aria-labelledby="userState-headingOne">-->
+<!--                            <div class="accordion-body">-->
+<!--                                <form>-->
+<!--                                    <div class="form-group">-->
+<!--                                        <div class="form-check form-check-inline">-->
+<!--                                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">-->
+<!--                                          <label class="form-check-label" for="inlineRadio1">Deaf</label>-->
+<!--                                        </div>-->
+<!--                                        <div class="form-check form-check-inline">-->
+<!--                                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">-->
+<!--                                          <label class="form-check-label" for="inlineRadio2">Hard of Hearing</label>-->
+<!--                                        </div>-->
+<!--                                        <div class="form-check form-check-inline">-->
+<!--                                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">-->
+<!--                                          <label class="form-check-label" for="inlineRadio3">Hearing</label>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </form>-->
+<!--                                <form>-->
+<!--                                    <div class="form-group">-->
+<!--                                        <div class="form-check form-check-inline">-->
+<!--                                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">-->
+<!--                                          <label class="form-check-label" for="inlineRadio4">Mute</label>-->
+<!--                                        </div>-->
+<!--                                        <div class="form-check form-check-inline">-->
+<!--                                          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">-->
+<!--                                          <label class="form-check-label" for="inlineRadio5">Speaking</label>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </form>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
                 <div class="accordion" id="settings">
                     <div class="accordion-item">
